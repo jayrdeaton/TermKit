@@ -221,9 +221,13 @@ describe('Command.parse — errors', () => {
     await expect(parse(cmd, ['-x'])).rejects.toThrow('Unknown Option: -x')
   })
 
-  it('throws when no action is defined', async () => {
+  it('prints help when no action is defined', async () => {
     const cmd = new Command({ name: 'orphan' })
-    await expect(cmd.parse(['_', '_'])).rejects.toThrow('No action for command: orphan')
+    const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {})
+    await expect(cmd.parse(['_', '_'])).resolves.toBeUndefined()
+    const output = logSpy.mock.calls.map((c) => c.join(' ')).join('\n')
+    expect(output).toContain('orphan')
+    logSpy.mockRestore()
   })
 })
 

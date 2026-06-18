@@ -126,6 +126,80 @@ describe('Select - navigation and selection', () => {
   })
 })
 
+describe('Select - terminal wrap', () => {
+  it('disables auto-wrap while rendering and restores it on exit', async () => {
+    const p = new Select().ask('Pick:', items)
+    press('\r')
+    await p
+    const output = mockWrite.mock.calls.map((c) => c[0] as string).join('')
+    // Auto-wrap is disabled during render so wrapped rows can't desync the
+    // CURSOR_UP redraw count and make the list march down the screen.
+    expect(output).toContain('\x1b[?7l')
+    // ...and re-enabled before resolving so later output wraps normally.
+    expect(output).toContain('\x1b[?7h')
+    expect(output.lastIndexOf('\x1b[?7h')).toBeGreaterThan(output.indexOf('\x1b[?7l'))
+  })
+})
+
+describe('Select - terminal height', () => {
+  const originalRows = process.stdout.rows
+  afterEach(() => {
+    process.stdout.rows = originalRows
+  })
+
+  it('caps the visible window to the terminal height so the list never scrolls', async () => {
+    process.stdout.rows = 8
+    const many = Array.from({ length: 20 }, (_, i) => ({ label: `Item ${i + 1}` }))
+    const p = new Select().ask('Pick:', many)
+    const initial = mockWrite.mock.calls.map((c) => c[0] as string).join('')
+    press('\r')
+    await p
+    // First row is visible; rows far past an 8-line viewport are not drawn.
+    expect(initial).toContain('Item 1')
+    expect(initial).not.toContain('Item 20')
+  })
+
+  it('shows the whole list when it fits in the terminal', async () => {
+    process.stdout.rows = 40
+    const p = new Select().ask('Pick:', [{ label: 'Alpha' }, { label: 'Beta' }, { label: 'Gamma' }])
+    const initial = mockWrite.mock.calls.map((c) => c[0] as string).join('')
+    press('\r')
+    await p
+    expect(initial).toContain('Alpha')
+    expect(initial).toContain('Gamma')
+  })
+})
+
+describe('Select - absolute numbering with viewport', () => {
+  const originalRows = process.stdout.rows
+  afterEach(() => {
+    process.stdout.rows = originalRows
+  })
+
+  it('numbers a scrolled row by its absolute position, not its window offset', async () => {
+    process.stdout.rows = 8 // viewport smaller than the list, so it scrolls
+    const many = Array.from({ length: 20 }, (_, i) => ({ label: `Item ${i + 1}` }))
+    const p = new Select().ask('Pick:', many)
+    for (let i = 0; i < 11; i++) press('\x1b[B') // scroll the cursor down to Item 12
+    const output = mockWrite.mock.calls.map((c) => c[0] as string).join('')
+    press('\r')
+    await p
+    // Window-relative numbering would label this row by its slot in the
+    // viewport (a single digit); absolute numbering keeps its real index.
+    expect(output).toContain('12. Item 12')
+  })
+
+  it('digit quick-select jumps to the absolute item even when scrolled away', async () => {
+    process.stdout.rows = 8
+    const many = Array.from({ length: 20 }, (_, i) => ({ label: `Item ${i + 1}` }))
+    const p = new Select().ask('Pick:', many)
+    for (let i = 0; i < 11; i++) press('\x1b[B') // scroll away from the top of the list
+    press('2') // must select the absolute 2nd item, not the 2nd visible row
+    press('\r')
+    await expect(p).resolves.toEqual({ label: 'Item 2' })
+  })
+})
+
 describe('Select - item descriptions', () => {
   it('renders item description alongside label', async () => {
     const p = new Select().ask('Pick:', [{ label: 'Foo', description: 'bar baz' }])

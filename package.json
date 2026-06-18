@@ -65,6 +65,7 @@
     "demo:multiselect": "node demos/multiselect.js",
     "demo:program": "node demos/program.js",
     "demo:select": "node demos/select.js",
+    "demo:shell": "node demos/shell.js",
     "demo:spinner": "node demos/spinner.js",
     "demo:table": "node demos/table.js",
     "demo:text": "node demos/text.js",
@@ -81,7 +82,7 @@
     "preversion": "npm run validate"
   },
   "dependencies": {
-    "cosmetic": "^1.4.1"
+    "cosmetic": "^1.4.2"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",

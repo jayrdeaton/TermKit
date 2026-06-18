@@ -2,9 +2,11 @@ import * as Chart from '../../models/Chart'
 
 const strip = (s: string) => s.replace(/\x1b\[[^a-zA-Z]*[a-zA-Z]/g, '')
 
-// Fix a column width so bar widths are deterministic
+// Fix a column width so bar widths are deterministic. writable:true so a later
+// test in the same jest worker can reassign process.stdout.columns — without it
+// the property is read-only and plain assignment elsewhere (e.g. Scrollbox) throws.
 beforeEach(() => {
-  Object.defineProperty(process.stdout, 'columns', { value: 80, configurable: true })
+  Object.defineProperty(process.stdout, 'columns', { value: 80, configurable: true, writable: true })
 })
 
 // ── Chart.Bar ─────────────────────────────────────────────────────────────────

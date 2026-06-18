@@ -138,6 +138,31 @@ my-app help
 my-app serve help
 ```
 
+Commands defined without an `.action()` print their help automatically when invoked. This makes parent commands that only group subcommands self-documenting — running `my-app` or `my-app serve` with no further input shows usage instead of erroring.
+
+### Shell
+
+Turn a command tree into an interactive REPL. `Program.shell()` runs the root command's subcommands as a live prompt instead of parsing `process.argv` once.
+
+```ts
+import { Program } from 'termkit'
+
+// ...define commands with Program.command(...)
+
+await Program.shell({ banner: 'myapp shell — type "help", "exit" to quit' })
+```
+
+Two modes:
+
+- **`drill`** (default) — step through the tree one level at a time. Each prompt lists the available subcommands; type a name to descend, `..` to go back up, `help` to print usage, or an exit command to quit. Leaf commands prompt for each declared variable in turn, then run. An empty line at the root exits.
+- **`free`** — type full command lines as you would on the CLI, with Tab completion across the command tree. `exit`/`quit` to leave.
+
+```ts
+await Program.shell({ mode: 'free', promptColor: '#a855f7' })
+```
+
+Options: `mode` (`'drill' | 'free'`, default `'drill'`), `prompt` (free-mode prompt label, defaults to the root command name), `promptColor` (named color, hex string, or xterm number), `banner`, `exitCommands` (default `['exit', 'quit']`), `historySize` (default `100`).
+
 ### configure
 
 Sets global display options for the entire toolkit — accent color used in help output, tables, charts, and prompts; plus Unicode glyph support.
@@ -193,7 +218,7 @@ Pass `search: true` to add a type-to-filter input. Typing narrows the list; Back
 const pkg = await select('Pick a package:', packages, { search: true })
 ```
 
-Pass `maxHeight` to cap the visible rows and enable scrolling. The viewport follows the cursor automatically.
+Pass `maxHeight` to cap the visible rows and enable scrolling. The viewport follows the cursor automatically. Even without `maxHeight`, the list is clamped to the terminal height so a long list never scrolls the screen.
 
 ```ts
 const tz = await select('Timezone?', timezones, { maxHeight: 8 })
@@ -236,7 +261,7 @@ Pass `search: true` to add a type-to-filter input. All printable characters go t
 const pkgs = await multiSelect('Add dependencies:', packages, { search: true })
 ```
 
-Pass `maxHeight` to cap the visible rows with auto-scrolling:
+Pass `maxHeight` to cap the visible rows with auto-scrolling. As with `select`, the list is also clamped to the terminal height automatically so it never scrolls the screen.
 
 ```ts
 const regions = await multiSelect('Deploy to:', regions, { maxHeight: 6 })
@@ -765,6 +790,7 @@ console.log(wrap(longParagraph, 60))
 | `Program.middleware` | `(fn) => fn` | Identity helper for typing middleware inline |
 | `Program.parse` | `(argv) => Promise<void>` | Parse argv using the root command |
 | `Program.setDefaults` | `(defaults) => void` | Apply middleware/options to all new commands |
+| `Program.shell` | `(options?) => Promise<void>` | Run the command tree as an interactive REPL |
 
 ### Functions
 
@@ -787,11 +813,11 @@ console.log(wrap(longParagraph, 60))
 
 ### Classes
 
-`Command`, `Option`, `Variable`, `TermKit`, `Bar`, `MultiBar`, `Spinner`, `Scrollbox`, `Input`, `Select`, `MultiSelect`, `Log`, `Table`, `Column`, `Chart.Bar`, `Chart.VerticalBar`, `Chart.Heatmap`, `Chart.Scatter`, `Chart.Line`
+`Command`, `Option`, `Variable`, `TermKit`, `Shell`, `Bar`, `MultiBar`, `Spinner`, `Scrollbox`, `Input`, `Select`, `MultiSelect`, `Log`, `Table`, `Column`, `Chart.Bar`, `Chart.VerticalBar`, `Chart.Heatmap`, `Chart.Scatter`, `Chart.Line`
 
 ### Types
 
-`ActionFn`, `MiddlewareFn`, `ParsedOptions`, `CommandDefaults`, `VariableType`, `BarMode`, `BarOptions`, `MultiBarOptions`, `SpinnerOptions`, `InputOptions`, `InputReturn`, `InputType`, `SelectItem`, `SelectOptions`, `MultiSelectItem`, `MultiSelectOptions`, `LogOptions`, `TableOptions`, `ColumnOptions`, `ColumnAlign`, `MarkupOptions`, `MarkupStyleFn`, `MarkupStyles`, `HelpColor`, `Chart.BarItem`, `Chart.BarOptions`, `Chart.VerticalBarItem`, `Chart.VerticalBarOptions`, `Chart.HeatmapOptions`, `Chart.ScatterPoint`, `Chart.ScatterOptions`, `Chart.LinePoint`, `Chart.LineOptions`, `Chart.SparklineOptions`
+`ActionFn`, `MiddlewareFn`, `ParsedOptions`, `CommandDefaults`, `ShellOptions`, `VariableType`, `BarMode`, `BarOptions`, `MultiBarOptions`, `SpinnerOptions`, `InputOptions`, `InputReturn`, `InputType`, `SelectItem`, `SelectOptions`, `MultiSelectItem`, `MultiSelectOptions`, `LogOptions`, `TableOptions`, `ColumnOptions`, `ColumnAlign`, `MarkupOptions`, `MarkupStyleFn`, `MarkupStyles`, `HelpColor`, `Chart.BarItem`, `Chart.BarOptions`, `Chart.VerticalBarItem`, `Chart.VerticalBarOptions`, `Chart.HeatmapOptions`, `Chart.ScatterPoint`, `Chart.ScatterOptions`, `Chart.LinePoint`, `Chart.LineOptions`, `Chart.SparklineOptions`
 
 ## Authors
 

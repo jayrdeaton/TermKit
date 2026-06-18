@@ -1,6 +1,8 @@
 export const RESET = '\x1b[0m'
 export const SHOW_CURSOR = '\x1b[?25h'
 export const HIDE_CURSOR = '\x1b[?25l'
+export const DISABLE_WRAP = '\x1b[?7l'
+export const ENABLE_WRAP = '\x1b[?7h'
 export const BOLD = '\x1b[1m'
 export const FAINT = '\x1b[2m'
 export const GREEN = '\x1b[32m'

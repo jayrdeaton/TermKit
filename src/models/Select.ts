@@ -1,6 +1,6 @@
 import { config } from '@/config'
 import { registerCleanup } from '@/utils/cleanup'
-import { applyShimmer, BLUE, colorText, formatColor, HIDE_CURSOR, interpolateColor, parseHex, RESET, resolveColor, type RgbColor, SHIMMER_SPEED, SHOW_CURSOR } from '@/utils/color'
+import { applyShimmer, BLUE, colorText, DISABLE_WRAP, ENABLE_WRAP, formatColor, HIDE_CURSOR, interpolateColor, parseHex, RESET, resolveColor, type RgbColor, SHIMMER_SPEED, SHOW_CURSOR } from '@/utils/color'
 import { stringLength } from '@/utils/stringLength'
 
 export interface SelectItem {
@@ -70,10 +70,24 @@ export class Select {
 
     let selectedIndex = 0
     let viewportOffset = 0
+    let visibleStart = 0
     let searchQuery = ''
     let lastDrawnLines = 0
 
     const skipItem = { label: this.skipLabel } as T
+
+    // Largest list block we can draw without the terminal scrolling. The
+    // redraw moves the cursor up by the number of lines drawn, so if the
+    // block is taller than the viewport every frame scrolls the screen and
+    // the list grows without bound. Cap the window to the terminal height
+    // (recomputed each render so resizes are handled), reserving a row for
+    // the prompt and the search line.
+    const computeMaxHeight = (): number => {
+      const termRows = process.stdout.rows ?? 24
+      const reserved = 1 /* prompt */ + (this.searchEnabled ? 1 : 0)
+      const fit = Math.max(1, termRows - reserved - 1)
+      return this.maxHeight ? Math.min(this.maxHeight, fit) : fit
+    }
 
     const getFiltered = (): T[] => {
       if (!this.searchEnabled || searchQuery === '') return items
@@ -81,7 +95,12 @@ export class Select {
       return items.filter((item) => item.label.toLowerCase().includes(q) || (item.description?.toLowerCase().includes(q) ?? false))
     }
 
-    process.stdout.write(HIDE_CURSOR)
+    // Disable terminal auto-wrap while rendering: CURSOR_UP counts logical
+    // (\n-terminated) lines, so a row that wraps to a 2nd physical row would
+    // leave the cursor too low on redraw and the list would march down the
+    // screen, ever-expanding. With wrap off, long rows are clipped at the
+    // right margin and each logical line stays exactly one physical row.
+    process.stdout.write(HIDE_CURSOR + DISABLE_WRAP)
     const glyph = this.promptGlyph ? `${colorText(this.promptColor, this.promptGlyph)} ` : ''
     const indent = ' '.repeat(this.promptGlyph ? stringLength(this.promptGlyph) + 1 : 0)
     process.stdout.write(`${glyph}${prompt}\n`)
@@ -93,15 +112,20 @@ export class Select {
       // clamp selectedIndex after filter changes
       if (selectedIndex >= allItems.length) selectedIndex = allItems.length - 1
 
-      // auto-scroll viewport
-      if (this.maxHeight) {
+      // auto-scroll viewport (engages whenever the list outgrows the window,
+      // whether the caller set maxHeight or the terminal is just too short)
+      const maxHeight = computeMaxHeight()
+      const useViewport = allItems.length > maxHeight
+      if (useViewport) {
         if (selectedIndex < viewportOffset) viewportOffset = selectedIndex
-        else if (selectedIndex >= viewportOffset + this.maxHeight) viewportOffset = selectedIndex - this.maxHeight + 1
-        viewportOffset = Math.max(0, Math.min(viewportOffset, Math.max(0, allItems.length - this.maxHeight)))
+        else if (selectedIndex >= viewportOffset + maxHeight) viewportOffset = selectedIndex - maxHeight + 1
+        viewportOffset = Math.max(0, Math.min(viewportOffset, Math.max(0, allItems.length - maxHeight)))
+      } else {
+        viewportOffset = 0
       }
 
-      const visibleStart = this.maxHeight ? viewportOffset : 0
-      const visibleEnd = this.maxHeight ? Math.min(allItems.length, viewportOffset + this.maxHeight) : allItems.length
+      visibleStart = useViewport ? viewportOffset : 0
+      const visibleEnd = useViewport ? Math.min(allItems.length, viewportOffset + maxHeight) : allItems.length
 
       if (redraw) {
         if (lastDrawnLines > 0) process.stdout.write(CURSOR_UP(lastDrawnLines))
@@ -119,8 +143,7 @@ export class Select {
         const item = allItems[i]
         const isSelected = i === selectedIndex
         const isSkip = i === filtered.length
-        const relativeNum = i - visibleStart + 1
-        const numStr = isSkip ? '0.' : `${relativeNum}.`
+        const numStr = isSkip ? '0.' : `${i + 1}.`
         const desc = item.description ? ` ${colorText(this.descriptionColor, `— ${item.description}`)}` : ''
         let marker: string, tail: string
         if (isSelected && pulse) {
@@ -149,7 +172,7 @@ export class Select {
         process.stdin.setRawMode(false)
         process.stdin.pause()
         process.stdin.removeListener('data', onKey)
-        process.stdout.write(SHOW_CURSOR)
+        process.stdout.write(ENABLE_WRAP + SHOW_CURSOR)
       })
 
       const cleanup = () => {
@@ -161,7 +184,7 @@ export class Select {
         process.stdin.setRawMode(false)
         process.stdin.pause()
         process.stdin.removeListener('data', onKey)
-        process.stdout.write(SHOW_CURSOR)
+        process.stdout.write(ENABLE_WRAP + SHOW_CURSOR)
       }
 
       if (this._parsedColors.length >= 2) {
@@ -207,8 +230,9 @@ export class Select {
         } else {
           const n = parseInt(str)
           if (!isNaN(n) && n >= 0 && n <= Math.min(items.length, 9)) {
-            const visibleStart = this.maxHeight ? viewportOffset : 0
-            selectedIndex = n === 0 ? allItems.length - 1 : visibleStart + n - 1
+            // Numbers are absolute, so digit n maps straight to item n (1-9);
+            // renderList scrolls the viewport to bring it on-screen if needed.
+            selectedIndex = n === 0 ? allItems.length - 1 : n - 1
             selectedIndex = Math.max(0, Math.min(selectedIndex, allItems.length - 1))
             renderList(true)
           }

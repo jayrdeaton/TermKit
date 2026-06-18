@@ -28,7 +28,7 @@ interface HelpSection {
 export class Command {
   actionFunction: ActionFn | null = null
   commandsArray: Command[] = []
-  commandStrings: string[] = ['help']
+  commandStrings: string[] = ['help', 'version']
   info: string | null = null
   middlewaresArray: MiddlewareFn[] = []
   name: string | null = null
@@ -113,6 +113,10 @@ export class Command {
     this.printHelp(this.name ?? 'Program', recursive)
   }
 
+  printVersion(): void {
+    console.log(this.versionString ?? '')
+  }
+
   private printHelp(fullName: string, recursive: boolean): void {
     const table: HelpSection[] = []
 
@@ -181,12 +185,16 @@ export class Command {
     }
   }
 
-  async parse(input: string[]): Promise<unknown> {
-    const array = [...input]
-    array.splice(0, 2)
+  async _execute(tokens: string[]): Promise<unknown> {
+    const array = [...tokens]
+    // walks down the subcommand tree, reassigned as each token is matched
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     let command: Command = this
     const options: ParsedOptions = { _source: Array.from(array) }
+
+    if (this.versionString && (array.includes('--version') || array.includes('-V'))) {
+      return this.printVersion()
+    }
 
     const ddIdx = array.indexOf('--')
     if (ddIdx !== -1) {
@@ -195,18 +203,19 @@ export class Command {
     }
 
     while (array.length) {
-      if (!array.includes('help')) {
+      if (!array.includes('help') && !array.includes('version')) {
         Object.assign(options, await findOptions(array, command))
         const cmdVars = await findCommandVariables(array, command)
         if (cmdVars) Object.assign(options, cmdVars)
         Object.assign(options, await findOptions(array, command))
       }
       if (array.length) {
-        if (!array.includes('help')) {
+        if (!array.includes('help') && !array.includes('version')) {
           for (const mw of command.middlewaresArray) await mw(options)
         }
         const next = findCommand(array, command.commandsArray)
         if (!next && array[0] === 'help') return command.help(options._source as string[])
+        if (!next && array[0] === 'version') return this.printVersion()
         if (!next) throw new SyntaxError(`Unknown command: ${array[0]}`)
 
         const name = command.name ?? '_base'
@@ -233,7 +242,10 @@ export class Command {
 
     for (const mw of command.middlewaresArray) await mw(options)
     if (command.actionFunction) return command.actionFunction(options)
-    if (options._source.length === 2) return command.help(options._source as string[])
-    throw new Error(`No action for command: ${command.name ?? '_base'}`)
+    return command.help(options._source as string[])
+  }
+
+  async parse(input: string[]): Promise<unknown> {
+    return this._execute(input.slice(2))
   }
 }

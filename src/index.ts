@@ -1,6 +1,8 @@
 import { config } from '@/config'
 import { Command } from '@/models/Command'
 import { Option } from '@/models/Option'
+import type { ShellOptions } from '@/models/Shell'
+import { Shell } from '@/models/Shell'
 import type { MiddlewareFn } from '@/types'
 
 export type { HelpColor } from '@/config'
@@ -26,6 +28,8 @@ export type { ScrollboxOptions } from '@/models/Scrollbox'
 export { Scrollbox, scrollbox } from '@/models/Scrollbox'
 export type { SelectItem, SelectOptions } from '@/models/Select'
 export { Select, select } from '@/models/Select'
+export type { ShellOptions } from '@/models/Shell'
+export { Shell } from '@/models/Shell'
 export type { SpinnerOptions } from '@/models/Spinner'
 export { Spinner } from '@/models/Spinner'
 export type { TableOptions } from '@/models/Table'
@@ -52,7 +56,7 @@ let commandDefaults: CommandDefaults = {}
 export const Program = {
   command: (name: string, variables?: string | null, info?: string): Command => {
     const cmd = new Command(Object.assign({ name, variables, info }, commandDefaults))
-    if (!base) base = cmd
+    base = cmd
     return cmd
   },
 
@@ -77,5 +81,10 @@ export const Program = {
 
   setDefaults: (data: CommandDefaults): void => {
     commandDefaults = data
+  },
+
+  shell: async (options?: ShellOptions): Promise<void> => {
+    if (!base) throw new Error('No command defined')
+    return new Shell(base, options).run()
   }
 }
