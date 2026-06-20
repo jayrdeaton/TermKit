@@ -26,7 +26,6 @@ export interface MultiSelectOptions {
   maxHeight?: number
 }
 
-const CLEAR_LINE = '\x1b[2K'
 const CURSOR_UP = (n: number) => `\x1b[${n}A`
 const DIM = '\x1b[2m'
 
@@ -197,25 +196,16 @@ export class MultiSelect {
           clearInterval(timer)
           timer = null
         }
-
-        if (lastDrawnLines > 0) process.stdout.write(CURSOR_UP(lastDrawnLines))
-        process.stdout.write('\x1b[0J')
-        // interactive block is gone — restore wrap so the final summary (which
-        // is printed once, never redrawn) wraps long labels normally
+        process.stdout.write(CURSOR_UP(lastDrawnLines + 1))
+        process.stdout.write('\r\x1b[0J')
         process.stdout.write(ENABLE_WRAP)
-
-        const bulletWidth = stringLength(this.checkedPrefix) + 1
-        for (let i = 0; i < items.length; i++) {
-          const item = items[i]
-          const bullet = checked.has(i) ? `${colorText(this.promptColor, this.checkedPrefix)} ` : ' '.repeat(bulletWidth)
-          process.stdout.write(`\r${indent}${bullet}${item.label}\n`)
-        }
-        process.stdout.write(`\r${CLEAR_LINE}`)
-
+        const selectedItems = items.filter((_, i) => checked.has(i))
+        const display = result !== null && selectedItems.length > 0 ? selectedItems.map((i) => i.label).join(', ') : '—'
+        process.stdout.write(`${glyph}${prompt}: ${display}\n`)
         process.stdin.setRawMode(false)
         process.stdin.pause()
         process.stdin.removeListener('data', onKey)
-        process.stdout.write(ENABLE_WRAP + SHOW_CURSOR)
+        process.stdout.write(SHOW_CURSOR)
         resolve(result)
       }
 

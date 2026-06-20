@@ -175,7 +175,7 @@ export class Select {
         process.stdout.write(ENABLE_WRAP + SHOW_CURSOR)
       })
 
-      const cleanup = () => {
+      const cleanup = (selectedLabel: string | null) => {
         deregisterCleanup()
         if (timer) {
           clearInterval(timer)
@@ -184,7 +184,11 @@ export class Select {
         process.stdin.setRawMode(false)
         process.stdin.pause()
         process.stdin.removeListener('data', onKey)
-        process.stdout.write(ENABLE_WRAP + SHOW_CURSOR)
+        process.stdout.write(CURSOR_UP(lastDrawnLines + 1))
+        process.stdout.write('\r\x1b[0J')
+        process.stdout.write(ENABLE_WRAP)
+        process.stdout.write(`${glyph}${prompt}: ${selectedLabel ?? this.skipLabel}\n`)
+        process.stdout.write(SHOW_CURSOR)
       }
 
       if (this._parsedColors.length >= 2) {
@@ -209,10 +213,19 @@ export class Select {
           selectedIndex = (selectedIndex + 1) % allItems.length
           renderList(true)
         } else if (str === '\r' || str === '\n') {
-          cleanup()
-          resolve(selectedIndex === filtered.length ? null : (filtered[selectedIndex] ?? null))
+          const result = selectedIndex === filtered.length ? null : (filtered[selectedIndex] ?? null)
+          cleanup(result?.label ?? null)
+          resolve(result)
         } else if (str === '\x03') {
-          cleanup()
+          deregisterCleanup()
+          if (timer) {
+            clearInterval(timer)
+            timer = null
+          }
+          process.stdin.setRawMode(false)
+          process.stdin.pause()
+          process.stdin.removeListener('data', onKey)
+          process.stdout.write(ENABLE_WRAP + SHOW_CURSOR)
           process.exit(130)
         } else if (this.searchEnabled) {
           if (str === '\x7f' || str === '\x08') {
