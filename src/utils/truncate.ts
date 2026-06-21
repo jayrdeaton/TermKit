@@ -1,9 +1,11 @@
+import { config } from '@/config'
+
 import { stringLength } from './stringLength'
 
 const ANSI_RE = /\x1b\[[0-9;]*[A-Za-z]/g
 const RESET = '\x1b[0m'
 
-export function truncate(str: string, maxLength: number, suffix = '…'): string {
+export function truncate(str: string, maxLength: number, suffix = config.glyphs ? '…' : '...'): string {
   if (stringLength(str) <= maxLength) return str
   const hasAnsi = ANSI_RE.test(str)
   ANSI_RE.lastIndex = 0

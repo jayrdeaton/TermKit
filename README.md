@@ -176,6 +176,8 @@ configure({
 })
 ```
 
+`glyphs` is auto-detected at startup. TermKit disables Unicode glyphs and falls back to ASCII alternatives on legacy terminals: `TERM=dumb`, non-UTF-8 locales (`LANG`/`LC_ALL`), and Windows consoles that are not Windows Terminal, VS Code, or Hyper. Set `TERMKIT_ASCII=1` to force ASCII mode regardless of terminal detection.
+
 ### Input
 
 Interactive text prompt. Supports string, number, integer, boolean, and enum types with validation.
@@ -764,10 +766,12 @@ ANSI-aware string truncation. Measures visible length ignoring escape codes, and
 import { truncate } from 'termkit'
 
 truncate('The quick brown fox jumps over the lazy dog', 20)
-// 'The quick brown fox…'
+// 'The quick brown fox…'  (or '...' on legacy terminals)
 
 truncate(coloredString, 40, ' [more]')
 ```
+
+The default suffix is `…` when glyphs are enabled and `...` on legacy terminals. Pass an explicit suffix to override.
 
 ### wrap
 

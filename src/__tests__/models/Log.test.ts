@@ -89,14 +89,14 @@ describe('Log methods - non-TTY', () => {
     expect(call).not.toContain('✔')
   })
 
-  it('writes message only when glyphs=false', () => {
+  it('writes ASCII glyph and message when glyphs=false', () => {
     new Log({ glyphs: false }).succeed('Hello')
-    expect(mockWrite).toHaveBeenCalledWith('Hello\n')
+    expect(mockWrite).toHaveBeenCalledWith('+ Hello\n')
   })
 
-  it('writes just newline when glyphs=false and no message', () => {
+  it('writes ASCII glyph only when glyphs=false and no message', () => {
     new Log({ glyphs: false }).succeed()
-    expect(mockWrite).toHaveBeenCalledWith('\n')
+    expect(mockWrite).toHaveBeenCalledWith('+\n')
   })
 })
 

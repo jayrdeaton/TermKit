@@ -1,3 +1,4 @@
+import { config } from '@/config'
 import { markup, type MarkupOptions } from '@/models/Markup'
 import { BLUE, colorText, GREEN, RED, YELLOW } from '@/utils/color'
 
@@ -21,31 +22,32 @@ export class Log {
     this._failColor = options.failColor ?? RED
     this._warnColor = options.warnColor ?? YELLOW
     this._infoColor = options.infoColor ?? BLUE
-    this._glyphs = options.glyphs ?? true
+    this._glyphs = options.glyphs ?? config.glyphs
   }
 
-  private write(glyph: string, color: string, message?: string): void {
+  private write(unicode: string, ascii: string, color: string, message?: string): void {
+    const glyph = this._glyphs ? unicode : ascii
     if (process.stdout.isTTY) {
       process.stdout.write(`${colorText(color, glyph)}${message ? ` ${message}` : ''}\n`)
     } else {
-      process.stdout.write(`${this._glyphs ? `${glyph}${message ? ` ${message}` : ''}` : (message ?? '')}\n`)
+      process.stdout.write(`${glyph}${message ? ` ${message}` : ''}\n`)
     }
   }
 
   succeed(message?: string): void {
-    this.write('✔', this._successColor, message)
+    this.write('✔', '+', this._successColor, message)
   }
 
   fail(message?: string): void {
-    this.write('✖', this._failColor, message)
+    this.write('✖', 'X', this._failColor, message)
   }
 
   warn(message?: string): void {
-    this.write('⚠', this._warnColor, message)
+    this.write('⚠', '!', this._warnColor, message)
   }
 
   info(message?: string): void {
-    this.write('ℹ', this._infoColor, message)
+    this.write('ℹ', 'i', this._infoColor, message)
   }
 
   data(value?: unknown, options?: MarkupOptions): void {

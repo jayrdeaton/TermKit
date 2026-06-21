@@ -1,3 +1,4 @@
+import { config } from '@/config'
 import { registerCleanup } from '@/utils/cleanup'
 import { ansiColor, applyShimmer, BLUE, colorText, dimColor, FAINT, formatColor, GREEN, HIDE_CURSOR, interpolateColor, parseHex, RED, RESET, type RgbColor, SHIMMER_SPEED, SHOW_CURSOR, YELLOW } from '@/utils/color'
 import { stringLength } from '@/utils/stringLength'
@@ -123,7 +124,7 @@ export class Bar {
     this._failColor = opts.failColor ?? RED
     this._warnColor = opts.warnColor ?? YELLOW
     this._infoColor = opts.infoColor ?? BLUE
-    this._glyphs = opts.glyphs ?? true
+    this._glyphs = opts.glyphs ?? config.glyphs
     this._showRate = opts.showRate ?? false
     this._showEta = opts.showEta ?? false
     this._rateUnit = opts.rateUnit ?? ''
@@ -292,9 +293,9 @@ export class Bar {
   succeed(string?: string): this {
     this.running = false
     if (Bar.current === this) Bar.current = null
+    const g = this._glyphs ? '✔' : '+'
     if (this._isManaged) {
-      const glyph = this._glyphs ? colorText(this._successColor, '✔') + ' ' : ''
-      this._managedFinalLine = `${glyph}${string ?? ''}`
+      this._managedFinalLine = `${colorText(this._successColor, g)}${string ? ` ${string}` : ''}`
       return this
     }
     this._cleanupDeregister?.()
@@ -305,9 +306,9 @@ export class Bar {
         this._resizeListener = null
       }
       this.clear()
-      process.stdout.write(`${SHOW_CURSOR}${colorText(this._successColor, '✔')}${string ? ` ${string}` : ''}\n`)
+      process.stdout.write(`${SHOW_CURSOR}${colorText(this._successColor, g)}${string ? ` ${string}` : ''}\n`)
     } else {
-      process.stdout.write(`${this._glyphs ? `✔${string ? ` ${string}` : ''}` : (string ?? '')}\n`)
+      process.stdout.write(`${g}${string ? ` ${string}` : ''}\n`)
     }
     return this
   }
@@ -315,9 +316,9 @@ export class Bar {
   fail(string?: string): this {
     this.running = false
     if (Bar.current === this) Bar.current = null
+    const g = this._glyphs ? '✖' : 'X'
     if (this._isManaged) {
-      const glyph = this._glyphs ? colorText(this._failColor, '✖') + ' ' : ''
-      this._managedFinalLine = `${glyph}${string ?? ''}`
+      this._managedFinalLine = `${colorText(this._failColor, g)}${string ? ` ${string}` : ''}`
       return this
     }
     this._cleanupDeregister?.()
@@ -328,9 +329,9 @@ export class Bar {
         this._resizeListener = null
       }
       this.clear()
-      process.stdout.write(`${SHOW_CURSOR}${colorText(this._failColor, '✖')}${string ? ` ${string}` : ''}\n`)
+      process.stdout.write(`${SHOW_CURSOR}${colorText(this._failColor, g)}${string ? ` ${string}` : ''}\n`)
     } else {
-      process.stdout.write(`${this._glyphs ? `✖${string ? ` ${string}` : ''}` : (string ?? '')}\n`)
+      process.stdout.write(`${g}${string ? ` ${string}` : ''}\n`)
     }
     return this
   }
@@ -338,9 +339,9 @@ export class Bar {
   warn(string?: string): this {
     this.running = false
     if (Bar.current === this) Bar.current = null
+    const g = this._glyphs ? '⚠' : '!'
     if (this._isManaged) {
-      const glyph = this._glyphs ? colorText(this._warnColor, '⚠') + ' ' : ''
-      this._managedFinalLine = `${glyph}${string ?? ''}`
+      this._managedFinalLine = `${colorText(this._warnColor, g)}${string ? ` ${string}` : ''}`
       return this
     }
     this._cleanupDeregister?.()
@@ -351,9 +352,9 @@ export class Bar {
         this._resizeListener = null
       }
       this.clear()
-      process.stdout.write(`${SHOW_CURSOR}${colorText(this._warnColor, '⚠')}${string ? ` ${string}` : ''}\n`)
+      process.stdout.write(`${SHOW_CURSOR}${colorText(this._warnColor, g)}${string ? ` ${string}` : ''}\n`)
     } else {
-      process.stdout.write(`${this._glyphs ? `⚠${string ? ` ${string}` : ''}` : (string ?? '')}\n`)
+      process.stdout.write(`${g}${string ? ` ${string}` : ''}\n`)
     }
     return this
   }
@@ -361,9 +362,9 @@ export class Bar {
   info(string?: string): this {
     this.running = false
     if (Bar.current === this) Bar.current = null
+    const g = this._glyphs ? 'ℹ' : 'i'
     if (this._isManaged) {
-      const glyph = this._glyphs ? colorText(this._infoColor, 'ℹ') + ' ' : ''
-      this._managedFinalLine = `${glyph}${string ?? ''}`
+      this._managedFinalLine = `${colorText(this._infoColor, g)}${string ? ` ${string}` : ''}`
       return this
     }
     this._cleanupDeregister?.()
@@ -374,9 +375,9 @@ export class Bar {
         this._resizeListener = null
       }
       this.clear()
-      process.stdout.write(`${SHOW_CURSOR}${colorText(this._infoColor, 'ℹ')}${string ? ` ${string}` : ''}\n`)
+      process.stdout.write(`${SHOW_CURSOR}${colorText(this._infoColor, g)}${string ? ` ${string}` : ''}\n`)
     } else {
-      process.stdout.write(`${this._glyphs ? `ℹ${string ? ` ${string}` : ''}` : (string ?? '')}\n`)
+      process.stdout.write(`${g}${string ? ` ${string}` : ''}\n`)
     }
     return this
   }

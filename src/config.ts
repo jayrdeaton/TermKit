@@ -1,6 +1,9 @@
 export type HelpColor = 'black' | 'red' | 'green' | 'yellow' | 'blue' | 'magenta' | 'cyan' | 'white' | number | `#${string}`
 
-const isLegacyTerminal = process.env.TERM === 'dumb' || (process.platform === 'win32' && !process.env.WT_SESSION && process.env.TERM_PROGRAM !== 'vscode' && process.env.TERM_PROGRAM !== 'Hyper')
+const locale = process.env.LC_ALL ?? process.env.LANG ?? ''
+const isNonUtf8Locale = locale !== '' && !/utf-?8/i.test(locale)
+
+const isLegacyTerminal = !!process.env.TERMKIT_ASCII || process.env.TERM === 'dumb' || isNonUtf8Locale || (process.platform === 'win32' && !process.env.WT_SESSION && process.env.TERM_PROGRAM !== 'vscode' && process.env.TERM_PROGRAM !== 'Hyper')
 
 interface TermKitConfig {
   color: HelpColor
