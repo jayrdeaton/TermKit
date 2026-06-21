@@ -1,3 +1,5 @@
+import { config } from '@/config'
+
 export const RESET = '\x1b[0m'
 export const SHOW_CURSOR = '\x1b[?25h'
 export const HIDE_CURSOR = '\x1b[?25l'
@@ -48,12 +50,12 @@ export function interpolateColor(colors: RgbColor[], t: number): RgbColor {
 }
 
 export function formatColor(code: 38 | 48, color: RgbColor): string {
-  if (!process.stdout.isTTY) return ''
+  if (!config.colors) return ''
   return `\x1b[${code};2;${color.r};${color.g};${color.b}m`
 }
 
 export function colorText(colorOrAnsi: string, text: string): string {
-  if (!process.stdout.isTTY) return text
+  if (!config.colors) return text
   if (colorOrAnsi.startsWith('#')) {
     const c = parseHex(colorOrAnsi)
     return `\x1b[38;2;${c.r};${c.g};${c.b}m${text}${RESET}`

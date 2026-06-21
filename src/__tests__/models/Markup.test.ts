@@ -1,11 +1,14 @@
+import { config } from '../../config'
 import { markup } from '../../models/Markup'
 
 beforeEach(() => {
   process.stdout.isTTY = true
+  config.colors = true
 })
 
 afterEach(() => {
   process.stdout.isTTY = false
+  config.colors = false
 })
 
 describe('markup()', () => {
@@ -171,8 +174,9 @@ describe('markup - TTY colors', () => {
     expect(result).toContain('\x1b[')
   })
 
-  it('omits ANSI codes in non-TTY mode', () => {
+  it('omits ANSI codes when colors disabled', () => {
     process.stdout.isTTY = false
+    config.colors = false
     const result = markup('hello')
     expect(result).not.toContain('\x1b[')
   })

@@ -1,3 +1,4 @@
+import { config } from '../../config'
 import {
   parseHex,
   lerpColor,
@@ -101,8 +102,8 @@ describe('interpolateColor', () => {
 })
 
 describe('formatColor', () => {
-  beforeEach(() => { process.stdout.isTTY = true })
-  afterEach(() => { process.stdout.isTTY = false })
+  beforeEach(() => { process.stdout.isTTY = true; config.colors = true })
+  afterEach(() => { process.stdout.isTTY = false; config.colors = false })
 
   it('returns the correct ANSI foreground code in TTY', () => {
     expect(formatColor(38, { r: 255, g: 0, b: 0 })).toBe('\x1b[38;2;255;0;0m')
@@ -112,18 +113,18 @@ describe('formatColor', () => {
     expect(formatColor(48, { r: 0, g: 255, b: 0 })).toBe('\x1b[48;2;0;255;0m')
   })
 
-  it('returns an empty string in non-TTY', () => {
-    process.stdout.isTTY = false
+  it('returns an empty string when colors disabled', () => {
+    config.colors = false
     expect(formatColor(38, { r: 255, g: 0, b: 0 })).toBe('')
   })
 })
 
 describe('colorText', () => {
-  beforeEach(() => { process.stdout.isTTY = true })
-  afterEach(() => { process.stdout.isTTY = false })
+  beforeEach(() => { process.stdout.isTTY = true; config.colors = true })
+  afterEach(() => { process.stdout.isTTY = false; config.colors = false })
 
-  it('returns plain text in non-TTY', () => {
-    process.stdout.isTTY = false
+  it('returns plain text when colors disabled', () => {
+    config.colors = false
     expect(colorText('#ff0000', 'hello')).toBe('hello')
   })
 

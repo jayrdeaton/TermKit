@@ -291,3 +291,9 @@ No changes to `types.ts`, `config.ts`, or any existing model needed.
 - Syntax-highlighted input as you type
 - Fuzzy matching for mistyped subcommands
 - `--interactive` / `-i` flag wired into `Program.parse()` as a built-in option
+
+---
+
+## Future breaking changes
+
+- Rename `config.glyphs` / `configure({ glyphs })` → `unicode` for clarity. Consistent rename across `TermKitConfig`, `LogOptions`, `BarOptions`, `SpinnerOptions`, and any other per-component option that exposes `glyphs`.

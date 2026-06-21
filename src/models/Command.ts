@@ -216,6 +216,7 @@ export class Command {
         const next = findCommand(array, command.commandsArray)
         if (!next && array[0] === 'help') return command.help(options._source as string[])
         if (!next && array[0] === 'version') return this.printVersion()
+        if (!next && array.includes('help')) return command.help(options._source as string[])
         if (!next) throw new SyntaxError(`Unknown command: ${array[0]}`)
 
         const name = command.name ?? '_base'
