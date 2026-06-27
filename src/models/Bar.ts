@@ -532,7 +532,7 @@ export class Bar {
   }
 
   private run(): void {
-    process.stdout.write(`${this.buildLine()}\x1b[K\r`)
+    process.stdout.write(`\r${this.buildLine()}\x1b[K`)
     this.advanceFrame()
     setTimeout(() => {
       if (this.running) this.run()

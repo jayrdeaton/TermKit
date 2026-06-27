@@ -209,6 +209,7 @@ export class Spinner {
   }
 
   private clear(): void {
+    process.stdout.write('\r')
     process.stdout.clearLine?.(0)
     this._lastLineLength = 0
   }
@@ -235,7 +236,7 @@ export class Spinner {
     const displayLen = stringLength(raw)
     const padding = ' '.repeat(Math.max(0, this._lastLineLength - displayLen))
     this._lastLineLength = displayLen
-    process.stdout.write(`${raw}${padding}\r`)
+    process.stdout.write(`\r${raw}${padding}`)
 
     this.frameIndex = (this.frameIndex + 1) % this.frames.length
     if (this.frameIndex === 0) this.onSpin?.()

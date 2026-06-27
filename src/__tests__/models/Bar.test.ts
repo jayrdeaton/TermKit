@@ -14,8 +14,8 @@ const mockClearLine = jest.spyOn(process.stdout, 'clearLine').mockImplementation
 const frames = () => mockWrite.mock.calls.filter((c) => !(c[0] as string).startsWith(`\x1b[?25`)).map((c) => c[0] as string)
 const firstFrame = () => frames()[0]
 
-// frames end with \x1b[K\r — strip those plus the leading [ and trailing ] to get inner content
-const innerContent = (frame: string) => frame.slice(1, -5)
+// frames start with \r and end with \x1b[K — strip those plus the leading [ and trailing ] to get inner content
+const innerContent = (frame: string) => frame.slice(2, -4)
 
 beforeEach(() => {
   mockWrite.mockClear()
@@ -116,7 +116,7 @@ describe('Bar start/stop', () => {
   it('writes to stdout on start', () => {
     const bar = new Bar({ length: 40 })
     bar.start()
-    expect(mockWrite).toHaveBeenCalledWith(expect.stringMatching(/\r$/))
+    expect(mockWrite).toHaveBeenCalledWith(expect.stringMatching(/^\r/))
     bar.stop()
   })
 
@@ -194,7 +194,7 @@ describe('Bar text and reverse', () => {
     const bar = new Bar({ length: 20, prefix: '[', suffix: ']', text: 'hello world' })
     bar.start()
     const frame = firstFrame()
-    const visual = frame.replace(/\r$/, '').replace(/\x1b\[[^a-zA-Z]*[a-zA-Z]/g, '')
+    const visual = frame.replace(/^\r/, '').replace(/\x1b\[[^a-zA-Z]*[a-zA-Z]/g, '')
     expect(visual.length).toBeLessThanOrEqual(20)
     expect(frame).toContain('hello world')
     bar.stop()
@@ -208,8 +208,8 @@ describe('Bar text and reverse', () => {
     bar.update('')
     jest.runOnlyPendingTimers()
     const frame = frames()[2]
-    // without text the bar expands, but \r should still be at end with no \n
-    expect(frame).toMatch(/\r$/)
+    // without text the bar expands, but \r should still be at start with no \n
+    expect(frame).toMatch(/^\r/)
     expect(frame).not.toContain('\n')
     bar.stop()
   })
@@ -300,7 +300,7 @@ describe('Bar progress (determinate)', () => {
   it('renders determinate bar at 0%', () => {
     const bar = new Bar({ length: 12, character: '=', prefix: '[', suffix: ']', progress: 0 })
     bar.start()
-    const call = mockWrite.mock.calls.find((c) => (c[0] as string).startsWith('['))
+    const call = mockWrite.mock.calls.find((c) => (c[0] as string).startsWith('\r['))
     expect(call).toBeDefined()
     bar.stop()
   })
@@ -308,7 +308,7 @@ describe('Bar progress (determinate)', () => {
   it('renders determinate bar at 50%', () => {
     const bar = new Bar({ length: 12, character: '=', prefix: '[', suffix: ']', progress: 0.5 })
     bar.start()
-    const frame = mockWrite.mock.calls.find((c) => (c[0] as string).startsWith('['))?.[0] as string
+    const frame = mockWrite.mock.calls.find((c) => (c[0] as string).startsWith('\r['))?.[0] as string
     expect(frame).toBeDefined()
     const inner = innerContent(frame)
     const filled = inner.split('').filter((c) => c === '=').length
@@ -320,7 +320,7 @@ describe('Bar progress (determinate)', () => {
   it('renders determinate bar at 100%', () => {
     const bar = new Bar({ length: 12, character: '=', prefix: '[', suffix: ']', progress: 1, colors: [] })
     bar.start()
-    const frame = mockWrite.mock.calls.find((c) => (c[0] as string).startsWith('['))?.[0] as string
+    const frame = mockWrite.mock.calls.find((c) => (c[0] as string).startsWith('\r['))?.[0] as string
     const inner = innerContent(frame)
     expect(inner.split('').every((c) => c === '=')).toBe(true)
     bar.stop()
@@ -347,7 +347,7 @@ describe('Bar progress (determinate)', () => {
   it('clamps progress below 0', () => {
     const bar = new Bar({ length: 12, character: '=', prefix: '[', suffix: ']', progress: -1 })
     bar.start()
-    const frame = mockWrite.mock.calls.find((c) => (c[0] as string).startsWith('['))?.[0] as string
+    const frame = mockWrite.mock.calls.find((c) => (c[0] as string).startsWith('\r['))?.[0] as string
     const inner = innerContent(frame)
     expect(inner.split('').every((c) => c === ' ')).toBe(true)
     bar.stop()
@@ -356,7 +356,7 @@ describe('Bar progress (determinate)', () => {
   it('clamps progress above 1', () => {
     const bar = new Bar({ length: 12, character: '=', prefix: '[', suffix: ']', progress: 5, colors: [] })
     bar.start()
-    const frame = mockWrite.mock.calls.find((c) => (c[0] as string).startsWith('['))?.[0] as string
+    const frame = mockWrite.mock.calls.find((c) => (c[0] as string).startsWith('\r['))?.[0] as string
     const inner = innerContent(frame)
     expect(inner.split('').every((c) => c === '=')).toBe(true)
     bar.stop()
@@ -835,7 +835,7 @@ describe('Bar ETA / rate tracking', () => {
     jest.runOnlyPendingTimers()
     const etaFrame = frames().find(f => f.includes('/s'))
     if (etaFrame) {
-      const visual = etaFrame.replace(/\r$/, '').replace(/\x1b\[[^a-zA-Z]*[a-zA-Z]/g, '')
+      const visual = etaFrame.replace(/^\r/, '').replace(/\x1b\[[^a-zA-Z]*[a-zA-Z]/g, '')
       expect(visual.length).toBeLessThanOrEqual(40)
     }
     bar.stop()

@@ -67,7 +67,7 @@ describe('Spinner start/stop', () => {
   it('writes a frame on start', () => {
     const s = new Spinner()
     s.start()
-    expect(mockWrite).toHaveBeenCalledWith(expect.stringMatching(/\r$/))
+    expect(mockWrite).toHaveBeenCalledWith(expect.stringMatching(/^\r/))
     s.stop()
   })
 
@@ -208,7 +208,7 @@ describe('Spinner text and reverse', () => {
     s.update('hi')
     jest.runOnlyPendingTimers()
     const frame = frames()[1]
-    expect(frame).toMatch(/hi\s+\r$/)
+    expect(frame).toMatch(/^\r.*hi\s+$/)
     s.stop()
   })
 })
@@ -331,6 +331,19 @@ describe('Spinner log method', () => {
     s.log('step done', '✓')
     expect(process.stdout.clearLine).toHaveBeenCalled()
     s.stop()
+  })
+
+  it('writes \\r before clearLine to reset cursor to column 0', () => {
+    const clearLineSpy = jest.spyOn(process.stdout, 'clearLine').mockClear()
+    mockWrite.mockClear()
+    const s = new Spinner({ frames: ['-'] })
+    s.start()
+    s.stop()
+    const crCallIdx = mockWrite.mock.calls.findIndex((c) => c[0] === '\r')
+    expect(crCallIdx).toBeGreaterThanOrEqual(0)
+    const crOrder = mockWrite.mock.invocationCallOrder[crCallIdx]
+    const clearOrder = clearLineSpy.mock.invocationCallOrder[0]
+    expect(crOrder).toBeLessThan(clearOrder)
   })
 
   it('spinner continues running after log()', () => {

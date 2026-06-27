@@ -38,7 +38,7 @@ spinnerConfigs.forEach(({ label, opts }, i) => {
 
 const TOTAL = spinnerConfigs.length * SPINNER_EACH
 
-at(TOTAL, () => spinner.stop())
+at(TOTAL, () => spinner.succeed('All frame styles'))
 
 // ─── update() ─────────────────────────────────────────────────────────
 
