@@ -1,6 +1,6 @@
 {
   "name": "termkit",
-  "version": "2.4.7",
+  "version": "2.4.8",
   "description": "Node.js terminal toolkit with CLI commands, progress bars, charts, tables, styled markup, prompts, and text utilities",
   "keywords": [
     "animation",
