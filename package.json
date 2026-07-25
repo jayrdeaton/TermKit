@@ -55,7 +55,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup && tsc --emitDeclarationOnly",
+    "build": "tsup",
     "demo:bar": "node demos/bar.js",
     "demo:chart": "node demos/chart.js",
     "demo:color": "node demos/color.js",
