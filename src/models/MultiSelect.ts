@@ -2,6 +2,7 @@ import { config } from '@/config'
 import { registerCleanup } from '@/utils/cleanup'
 import { applyShimmer, BLUE, colorText, DISABLE_WRAP, ENABLE_WRAP, formatColor, HIDE_CURSOR, interpolateColor, parseHex, RED, RESET, resolveColor, type RgbColor, SHIMMER_SPEED, SHOW_CURSOR } from '@/utils/color'
 import { stringLength } from '@/utils/stringLength'
+import { truncate } from '@/utils/truncate'
 
 export interface MultiSelectItem {
   label: string
@@ -148,6 +149,11 @@ export class MultiSelect {
       }
 
       const pulse = this.pulseColor()
+      // Item rows (label + description) come from caller data and can exceed
+      // terminal width — truncate the same way the hint line below does, so a
+      // long row can't wrap and desync lastDrawnLines even if the terminal
+      // doesn't fully honor DISABLE_WRAP.
+      const maxRowCols = Math.max(10, (process.stdout.columns ?? 80) - stringLength(indent) - 1)
       for (let vi = visibleStart; vi < visibleEnd; vi++) {
         const { item, originalIndex } = filtered[vi]
         const isCursor = vi === cursor
@@ -156,7 +162,8 @@ export class MultiSelect {
         const desc = item.description ? ` ${colorText(this.descriptionColor, `— ${item.description}`)}` : ''
         const checkMark = isChecked ? (pulse ? `${pulse}${this.checkedPrefix}${RESET}` : colorText(this.promptColor, this.checkedPrefix)) : this.uncheckedPrefix
         const label = isCursor ? (pulse ? `${pulse}${item.label}${RESET}` : colorText(this.promptColor, item.label)) : item.label
-        process.stdout.write(`\r${indent}${numStr} ${checkMark} ${label}${desc}\n`)
+        const row = truncate(`${numStr} ${checkMark} ${label}${desc}`, maxRowCols)
+        process.stdout.write(`\r${indent}${row}\n`)
         lastDrawnLines++
       }
 

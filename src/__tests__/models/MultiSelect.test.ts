@@ -66,6 +66,30 @@ describe('MultiSelect - terminal wrap', () => {
   })
 })
 
+describe('MultiSelect - long row truncation', () => {
+  const originalColumns = process.stdout.columns
+  afterEach(() => {
+    process.stdout.columns = originalColumns
+  })
+
+  it('clips an overlong item row instead of letting it wrap the terminal', async () => {
+    process.stdout.columns = 40
+    const longLabel = 'X'.repeat(300)
+    const p = new MultiSelect().ask('Pick:', [{ label: longLabel, description: 'Y'.repeat(300) }])
+    const initial = mockWrite.mock.calls.map((c) => c[0] as string).join('')
+    press('\r')
+    await p
+    const stripAnsi = (s: string) => s.replace(/\x1b\[[0-9;]*[A-Za-z]/g, '')
+    const rowLine = initial.split('\n').find((line) => line.includes('X'))
+    expect(rowLine).toBeDefined()
+    // Left unbounded, a row this long would wrap onto a second physical line
+    // and desync the CURSOR_UP redraw count on the next render (the list
+    // "marches down the screen"). It must be clipped to fit the terminal.
+    expect(stripAnsi(rowLine!).length).toBeLessThanOrEqual(process.stdout.columns)
+    expect(rowLine).not.toContain(longLabel)
+  })
+})
+
 describe('MultiSelect - terminal height', () => {
   const originalRows = process.stdout.rows
   afterEach(() => {

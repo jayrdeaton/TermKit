@@ -2,6 +2,7 @@ import { config } from '@/config'
 import { registerCleanup } from '@/utils/cleanup'
 import { applyShimmer, BLUE, colorText, DISABLE_WRAP, ENABLE_WRAP, formatColor, HIDE_CURSOR, interpolateColor, parseHex, RESET, resolveColor, type RgbColor, SHIMMER_SPEED, SHOW_CURSOR } from '@/utils/color'
 import { stringLength } from '@/utils/stringLength'
+import { truncate } from '@/utils/truncate'
 
 export interface SelectItem {
   label: string
@@ -139,6 +140,11 @@ export class Select {
       }
 
       const pulse = this.pulseColor()
+      // Item rows (label + description) come from caller data and can exceed
+      // terminal width — truncate the same way the hint line below does, so a
+      // long row can't wrap and desync lastDrawnLines even if the terminal
+      // doesn't fully honor DISABLE_WRAP.
+      const maxRowCols = Math.max(10, (process.stdout.columns ?? 80) - stringLength(indent) - 1)
       for (let i = visibleStart; i < visibleEnd; i++) {
         const item = allItems[i]
         const isSelected = i === selectedIndex
@@ -154,7 +160,8 @@ export class Select {
           marker = fallback ? colorText(fallback, this.selectedPrefix) : ' '.repeat(stringLength(this.selectedPrefix))
           tail = isSelected ? ` ${colorText(this.promptColor, this.selectedSuffix)}` : ''
         }
-        process.stdout.write(`\r${indent}${marker} ${numStr} ${item.label}${desc}${tail}\n`)
+        const row = truncate(`${marker} ${numStr} ${item.label}${desc}${tail}`, maxRowCols)
+        process.stdout.write(`\r${indent}${row}\n`)
         lastDrawnLines++
       }
     }
