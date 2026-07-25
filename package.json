@@ -86,7 +86,7 @@
     "esbuild": "^0.28.1"
   },
   "dependencies": {
-    "cosmetic": "^1.4.2"
+    "cosmetic": "^1.5.0"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
