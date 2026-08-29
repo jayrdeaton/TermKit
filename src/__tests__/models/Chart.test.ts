@@ -77,7 +77,10 @@ describe('Chart.VerticalBar — toString()', () => {
   })
 
   it('renders key labels when provided', () => {
-    const c = new Chart.VerticalBar([{ key: 'A', value: 3 }, { key: 'B', value: 7 }])
+    const c = new Chart.VerticalBar([
+      { key: 'A', value: 3 },
+      { key: 'B', value: 7 }
+    ])
     const out = strip(c.toString())
     expect(out).toContain('A')
     expect(out).toContain('B')
@@ -87,7 +90,7 @@ describe('Chart.VerticalBar — toString()', () => {
     const c = new Chart.VerticalBar([{ value: 5 }])
     // No label line after baseline
     const lines = c.toString().split('\n').filter(Boolean)
-    const baseIdx = lines.findIndex(l => l.includes('─'))
+    const baseIdx = lines.findIndex((l) => l.includes('─'))
     expect(baseIdx).toBe(lines.length - 1)
   })
 
@@ -133,7 +136,7 @@ describe('Chart.VerticalBar — print()', () => {
 describe('Chart.Heatmap — toString()', () => {
   const data = [
     [0, 0.5, 1],
-    [1, 0.5, 0],
+    [1, 0.5, 0]
   ]
 
   it('returns a non-empty string', () => {
@@ -185,7 +188,7 @@ describe('Chart.Scatter — toString()', () => {
   const data = [
     { x: 1, y: 1 },
     { x: 2, y: 3 },
-    { x: 3, y: 2 },
+    { x: 3, y: 2 }
   ]
 
   it('returns a non-empty string', () => {
@@ -258,7 +261,11 @@ describe('Chart.Scatter — print()', () => {
 // ── Chart.Line ────────────────────────────────────────────────────────────────
 
 describe('Chart.Line — toString()', () => {
-  const data = [{ x: 0, y: 0 }, { x: 5, y: 5 }, { x: 10, y: 0 }]
+  const data = [
+    { x: 0, y: 0 },
+    { x: 5, y: 5 },
+    { x: 10, y: 0 }
+  ]
 
   it('returns a non-empty string', () => {
     const c = new Chart.Line(data, { width: 40, height: 10 })
@@ -299,7 +306,13 @@ describe('Chart.Line — toString()', () => {
 
   it('applies style function to points', () => {
     const style = jest.fn((s: string) => `[${s}]`)
-    const c = new Chart.Line([{ x: 0, y: 0, style }, { x: 10, y: 10, style }], { width: 30, height: 8 })
+    const c = new Chart.Line(
+      [
+        { x: 0, y: 0, style },
+        { x: 10, y: 10, style }
+      ],
+      { width: 30, height: 8 }
+    )
     expect(c.toString()).toContain('[')
     expect(style).toHaveBeenCalled()
   })
@@ -318,7 +331,13 @@ describe('Chart.Line — toString()', () => {
 describe('Chart.Line — print()', () => {
   it('writes to process.stdout', () => {
     const spy = jest.spyOn(process.stdout, 'write').mockImplementation(() => true)
-    new Chart.Line([{ x: 0, y: 0 }, { x: 1, y: 1 }], { width: 20, height: 8 }).print()
+    new Chart.Line(
+      [
+        { x: 0, y: 0 },
+        { x: 1, y: 1 }
+      ],
+      { width: 20, height: 8 }
+    ).print()
     expect(spy).toHaveBeenCalled()
     spy.mockRestore()
   })

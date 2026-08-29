@@ -1,25 +1,3 @@
-/** @type {import('jest').Config} */
-module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'node',
-  roots: ['<rootDir>/src'],
-  transform: {
-    '^.+\\.tsx?$': [
-      'ts-jest',
-      {
-        tsconfig: {
-          module: 'CommonJS',
-          moduleResolution: 'node',
-          ignoreDeprecations: '5.0',
-          lib: ['ES2022'],
-          types: ['jest', 'node']
-        }
-      }
-    ]
-  },
-  moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1'
-  },
-  testMatch: ['**/__tests__/**/*.test.ts'],
+module.exports = require('@infinitetoken/jest-config/node')({
   setupFilesAfterEnv: ['<rootDir>/jest.setup.cjs']
-}
+})

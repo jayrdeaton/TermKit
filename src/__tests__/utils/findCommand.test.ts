@@ -1,5 +1,5 @@
-import { findCommand } from '../../utils/findCommand'
 import { Command } from '../../models/Command'
+import { findCommand } from '../../utils/findCommand'
 
 describe('findCommand', () => {
   let start: Command

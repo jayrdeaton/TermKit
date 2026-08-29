@@ -410,7 +410,7 @@ describe('Bar colors', () => {
     bar.start()
     bar.colors = []
     jest.runOnlyPendingTimers()
-    const lastFrame = mockWrite.mock.calls.at(-1)?.[0] as string
+    const lastFrame = mockWrite.mock.calls[mockWrite.mock.calls.length - 1]?.[0] as string
     expect(lastFrame).not.toContain('\x1b[38;2;')
     bar.stop()
   })
@@ -485,7 +485,7 @@ describe('Bar bgColors', () => {
     bar.start()
     bar.bgColors = []
     jest.runOnlyPendingTimers()
-    const lastFrame = mockWrite.mock.calls.at(-1)?.[0] as string
+    const lastFrame = mockWrite.mock.calls[mockWrite.mock.calls.length - 1]?.[0] as string
     expect(lastFrame).not.toContain('\x1b[48;2;')
     bar.stop()
   })
@@ -819,7 +819,7 @@ describe('Bar ETA / rate tracking', () => {
     bar.tick(50)
     bar.start()
     jest.runOnlyPendingTimers()
-    const etaFrame = frames().find(f => f.includes('/s'))
+    const etaFrame = frames().find((f) => f.includes('/s'))
     expect(etaFrame).toBeDefined()
     expect(etaFrame).toContain('ETA')
     bar.stop()
@@ -833,7 +833,7 @@ describe('Bar ETA / rate tracking', () => {
     bar.tick(10)
     bar.start()
     jest.runOnlyPendingTimers()
-    const etaFrame = frames().find(f => f.includes('/s'))
+    const etaFrame = frames().find((f) => f.includes('/s'))
     if (etaFrame) {
       const visual = etaFrame.replace(/^\r/, '').replace(/\x1b\[[^a-zA-Z]*[a-zA-Z]/g, '')
       expect(visual.length).toBeLessThanOrEqual(40)

@@ -1,16 +1,5 @@
 import { config } from '../../config'
-import {
-  parseHex,
-  lerpColor,
-  interpolateColor,
-  formatColor,
-  colorText,
-  dimColor,
-  shimmerFactor,
-  applyShimmer,
-  DIM,
-  RESET,
-} from '../../utils/color'
+import { applyShimmer, colorText, DIM, dimColor, formatColor, interpolateColor, lerpColor, parseHex, RESET, shimmerFactor } from '../../utils/color'
 
 describe('parseHex', () => {
   it('parses red', () => {
@@ -102,8 +91,14 @@ describe('interpolateColor', () => {
 })
 
 describe('formatColor', () => {
-  beforeEach(() => { process.stdout.isTTY = true; config.colors = true })
-  afterEach(() => { process.stdout.isTTY = false; config.colors = false })
+  beforeEach(() => {
+    process.stdout.isTTY = true
+    config.colors = true
+  })
+  afterEach(() => {
+    process.stdout.isTTY = false
+    config.colors = false
+  })
 
   it('returns the correct ANSI foreground code in TTY', () => {
     expect(formatColor(38, { r: 255, g: 0, b: 0 })).toBe('\x1b[38;2;255;0;0m')
@@ -120,8 +115,14 @@ describe('formatColor', () => {
 })
 
 describe('colorText', () => {
-  beforeEach(() => { process.stdout.isTTY = true; config.colors = true })
-  afterEach(() => { process.stdout.isTTY = false; config.colors = false })
+  beforeEach(() => {
+    process.stdout.isTTY = true
+    config.colors = true
+  })
+  afterEach(() => {
+    process.stdout.isTTY = false
+    config.colors = false
+  })
 
   it('returns plain text when colors disabled', () => {
     config.colors = false
@@ -145,7 +146,7 @@ describe('dimColor', () => {
     expect(result).toEqual({
       r: Math.round(100 * DIM),
       g: Math.round(200 * DIM),
-      b: Math.round(50 * DIM),
+      b: Math.round(50 * DIM)
     })
   })
 

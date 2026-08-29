@@ -1,5 +1,5 @@
-import { coerce, findVariable } from '../../utils/findVariable'
 import { Variable } from '../../models/Variable'
+import { coerce, findVariable } from '../../utils/findVariable'
 
 describe('coerce — numeric types', () => {
   it('converts a string to number', () => {

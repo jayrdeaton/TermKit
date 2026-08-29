@@ -1,6 +1,6 @@
 import { Program } from '../..'
 
-const { command, option } = Program
+const { command } = Program
 
 type ActionResult = { options: Record<string, unknown> }
 
@@ -68,9 +68,7 @@ describe('value coercion', () => {
       .option('p', 'port', '<port:integer>', 'Port number')
       .action((options) => ({ options }))
 
-    await expect(program.parse('_ _ --port 3.14'.split(' '))).rejects.toThrow(
-      'Invalid value "3.14" — expected an integer'
-    )
+    await expect(program.parse('_ _ --port 3.14'.split(' '))).rejects.toThrow('Invalid value "3.14" — expected an integer')
   })
 
   it('accepts a valid enum value', async () => {
@@ -87,9 +85,7 @@ describe('value coercion', () => {
       .option('e', 'env', '<env:dev|staging|prod>', 'Environment')
       .action((options) => ({ options }))
 
-    await expect(program.parse('_ _ --env nope'.split(' '))).rejects.toThrow(
-      'Invalid value "nope" — expected one of: dev, staging, prod'
-    )
+    await expect(program.parse('_ _ --env nope'.split(' '))).rejects.toThrow('Invalid value "nope" — expected one of: dev, staging, prod')
   })
 
   it('returns a default value when option variable is omitted', async () => {

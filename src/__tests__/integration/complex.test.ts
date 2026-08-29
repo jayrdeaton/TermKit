@@ -11,12 +11,7 @@ beforeAll(() => {
     .version('1.0.0')
     .description('Program description')
     .variable('[dir]')
-    .options([
-      option('a', 'array', '[arr...]', 'Option with array variable'),
-      option('r', 'required', '<reqA> <reqB>', 'Option with required variable'),
-      option('o', 'optional', '[opt]', 'Option with optional variable'),
-      option('b', 'boolean', null, 'Option with no variable')
-    ])
+    .options([option('a', 'array', '[arr...]', 'Option with array variable'), option('r', 'required', '<reqA> <reqB>', 'Option with required variable'), option('o', 'optional', '[opt]', 'Option with optional variable'), option('b', 'boolean', null, 'Option with no variable')])
     .action((options) => ({ command: 'app', options }))
     .commands([
       command('help', undefined, 'Help Func').action((options) => ({ command: 'help', options })),

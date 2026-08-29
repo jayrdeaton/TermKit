@@ -36,10 +36,7 @@ describe('findVariables — single variable', () => {
 describe('findVariables — multiple variables', () => {
   it('nests values under base when there are multiple variables', async () => {
     const arr = ['a.txt', 'b.txt']
-    const vars = [
-      new Variable({ name: 'src', type: 'string' }),
-      new Variable({ name: 'dest', type: 'string' }),
-    ]
+    const vars = [new Variable({ name: 'src', type: 'string' }), new Variable({ name: 'dest', type: 'string' })]
     const result = await findVariables('copy', arr, vars, [])
     expect(result).toEqual({ copy: { src: 'a.txt', dest: 'b.txt' } })
   })

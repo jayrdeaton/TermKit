@@ -68,6 +68,9 @@ Right now interactive components throw on non-TTY. Could add a `{ fallback: true
 **Accessibility / screen reader hints**
 Emit ARIA-style terminal annotations where supported (e.g. `\x1b]1337;` sequences in iTerm). Long shot but worth noting.
 
+**Rename `glyphs` → `unicode`** *(breaking change)*
+Consistent rename across `TermKitConfig`, `LogOptions`, `BarOptions`, `SpinnerOptions`, and any other per-component option that currently exposes `glyphs` (e.g. `config.glyphs`, `configure({ glyphs })`). Clearer name for what the option actually controls.
+
 ---
 
 ## Not Yet Built (identified during recent work)

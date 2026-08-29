@@ -39,7 +39,7 @@ describe('Scrollbox - rendering', () => {
     const p = new Scrollbox({ height: 5 }).show(lines)
     press('q')
     await p
-    const output = mockWrite.mock.calls.map(c => c[0] as string).join('')
+    const output = mockWrite.mock.calls.map((c) => c[0] as string).join('')
     expect(output).toContain('Line 1')
     expect(output).toContain('Line 5')
     expect(output).not.toContain('Line 6')
@@ -49,7 +49,7 @@ describe('Scrollbox - rendering', () => {
     const p = new Scrollbox({ height: 5, title: 'My Output' }).show(lines)
     press('q')
     await p
-    const output = mockWrite.mock.calls.map(c => c[0] as string).join('')
+    const output = mockWrite.mock.calls.map((c) => c[0] as string).join('')
     expect(output).toContain('My Output')
   })
 
@@ -57,7 +57,7 @@ describe('Scrollbox - rendering', () => {
     const p = new Scrollbox({ height: 3, lineNumbers: true }).show(['a', 'b', 'c'])
     press('q')
     await p
-    const output = mockWrite.mock.calls.map(c => c[0] as string).join('')
+    const output = mockWrite.mock.calls.map((c) => c[0] as string).join('')
     expect(output).toContain('1')
     expect(output).toContain('2')
     expect(output).toContain('3')
@@ -67,7 +67,7 @@ describe('Scrollbox - rendering', () => {
     const p = new Scrollbox({ height: 5 }).show(lines)
     press('q')
     await p
-    const output = mockWrite.mock.calls.map(c => c[0] as string).join('')
+    const output = mockWrite.mock.calls.map((c) => c[0] as string).join('')
     expect(output).toMatch(/\d+%/)
   })
 
@@ -75,7 +75,7 @@ describe('Scrollbox - rendering', () => {
     const p = new Scrollbox({ height: 20 }).show(['a', 'b', 'c'])
     press('q')
     await p
-    const output = mockWrite.mock.calls.map(c => c[0] as string).join('')
+    const output = mockWrite.mock.calls.map((c) => c[0] as string).join('')
     expect(output).toContain('100%')
   })
 })
@@ -86,7 +86,7 @@ describe('Scrollbox - navigation', () => {
     press('\x1b[B')
     press('q')
     await p
-    const calls = mockWrite.mock.calls.map(c => c[0] as string)
+    const calls = mockWrite.mock.calls.map((c) => c[0] as string)
     const lastRender = calls.join('')
     expect(lastRender).toContain('Line 2')
   })
@@ -96,7 +96,7 @@ describe('Scrollbox - navigation', () => {
     press('j')
     press('q')
     await p
-    const output = mockWrite.mock.calls.map(c => c[0] as string).join('')
+    const output = mockWrite.mock.calls.map((c) => c[0] as string).join('')
     expect(output).toContain('Line 2')
   })
 
@@ -107,7 +107,7 @@ describe('Scrollbox - navigation', () => {
     press('k')
     press('q')
     await p
-    const output = mockWrite.mock.calls.map(c => c[0] as string).join('')
+    const output = mockWrite.mock.calls.map((c) => c[0] as string).join('')
     expect(output).toContain('Line 1')
   })
 
@@ -116,7 +116,7 @@ describe('Scrollbox - navigation', () => {
     press('G')
     press('q')
     await p
-    const output = mockWrite.mock.calls.map(c => c[0] as string).join('')
+    const output = mockWrite.mock.calls.map((c) => c[0] as string).join('')
     expect(output).toContain('Line 20')
   })
 
@@ -126,7 +126,7 @@ describe('Scrollbox - navigation', () => {
     press('g')
     press('q')
     await p
-    const output = mockWrite.mock.calls.map(c => c[0] as string).join('')
+    const output = mockWrite.mock.calls.map((c) => c[0] as string).join('')
     expect(output).toContain('Line 1')
   })
 
@@ -135,7 +135,7 @@ describe('Scrollbox - navigation', () => {
     press(' ')
     press('q')
     await p
-    const output = mockWrite.mock.calls.map(c => c[0] as string).join('')
+    const output = mockWrite.mock.calls.map((c) => c[0] as string).join('')
     expect(output).toContain('Line 6')
   })
 
@@ -145,7 +145,7 @@ describe('Scrollbox - navigation', () => {
     press('b')
     press('q')
     await p
-    const output = mockWrite.mock.calls.map(c => c[0] as string).join('')
+    const output = mockWrite.mock.calls.map((c) => c[0] as string).join('')
     expect(output).toContain('Line 1')
   })
 })
@@ -186,7 +186,7 @@ describe('scrollbox() convenience function', () => {
     const p = scrollbox(['hello'], { height: 5, title: 'Test Title' })
     press('q')
     await p
-    const output = mockWrite.mock.calls.map(c => c[0] as string).join('')
+    const output = mockWrite.mock.calls.map((c) => c[0] as string).join('')
     expect(output).toContain('Test Title')
   })
 })

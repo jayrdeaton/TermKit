@@ -58,10 +58,7 @@ describe('findOptions — short flags', () => {
   })
 
   it('stacks short flags: -vf pushes -f back for next iteration', async () => {
-    const cmd = makeCmd([
-      new Option({ short: 'v', long: 'verbose' }),
-      new Option({ short: 'f', long: 'force' }),
-    ])
+    const cmd = makeCmd([new Option({ short: 'v', long: 'verbose' }), new Option({ short: 'f', long: 'force' })])
     const arr = ['-vf']
     const result = await findOptions(arr, cmd)
     expect(result.verbose).toBe(true)
@@ -85,10 +82,7 @@ describe('findOptions — stops at non-flag tokens', () => {
 
 describe('findOptions — multiple flags', () => {
   it('collects multiple long flags', async () => {
-    const cmd = makeCmd([
-      new Option({ long: 'verbose' }),
-      new Option({ long: 'force' }),
-    ])
+    const cmd = makeCmd([new Option({ long: 'verbose' }), new Option({ long: 'force' })])
     const result = await findOptions(['--verbose', '--force'], cmd)
     expect(result).toEqual({ verbose: true, force: true })
   })

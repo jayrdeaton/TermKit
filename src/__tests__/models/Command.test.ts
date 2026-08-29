@@ -111,14 +111,14 @@ describe('Command.parse — flags and options', () => {
   it('long flag with no variable resolves to true', async () => {
     const cmd = new Command({ name: 'app' })
     cmd.option('v', 'verbose', null, 'Verbose').action((o) => o)
-    const result = await parse(cmd, ['--verbose']) as any
+    const result = (await parse(cmd, ['--verbose'])) as any
     expect(result.verbose).toBe(true)
   })
 
   it('short flag with no variable resolves to true', async () => {
     const cmd = new Command({ name: 'app' })
     cmd.option('v', 'verbose', null, 'Verbose').action((o) => o)
-    const result = await parse(cmd, ['-v']) as any
+    const result = (await parse(cmd, ['-v'])) as any
     expect(result.verbose).toBe(true)
   })
 
@@ -128,7 +128,7 @@ describe('Command.parse — flags and options', () => {
       .option('a', 'alpha', null, 'Alpha')
       .option('b', 'beta', null, 'Beta')
       .action((o) => o)
-    const result = await parse(cmd, ['-ab']) as any
+    const result = (await parse(cmd, ['-ab'])) as any
     expect(result.alpha).toBe(true)
     expect(result.beta).toBe(true)
   })
@@ -136,28 +136,28 @@ describe('Command.parse — flags and options', () => {
   it('--no-flag negates a boolean option', async () => {
     const cmd = new Command({ name: 'app' })
     cmd.option('v', 'verbose', null, 'Verbose').action((o) => o)
-    const result = await parse(cmd, ['--verbose', '--no-verbose']) as any
+    const result = (await parse(cmd, ['--verbose', '--no-verbose'])) as any
     expect(result.verbose).toBe(false)
   })
 
   it('long option with value captures the value', async () => {
     const cmd = new Command({ name: 'app' })
     cmd.option('p', 'port', '<port:number>', 'Port').action((o) => o)
-    const result = await parse(cmd, ['--port', '3000']) as any
+    const result = (await parse(cmd, ['--port', '3000'])) as any
     expect(result.port).toBe(3000)
   })
 
   it('applies option defaults when option is absent', async () => {
     const cmd = new Command({ name: 'app' })
     cmd.option('p', 'port', '<port:number=8080>', 'Port').action((o) => o)
-    const result = await parse(cmd, []) as any
+    const result = (await parse(cmd, [])) as any
     expect(result.port).toBe(8080)
   })
 
   it('does not apply default when option is explicitly provided', async () => {
     const cmd = new Command({ name: 'app' })
     cmd.option('p', 'port', '<port:number=8080>', 'Port').action((o) => o)
-    const result = await parse(cmd, ['--port', '9000']) as any
+    const result = (await parse(cmd, ['--port', '9000'])) as any
     expect(result.port).toBe(9000)
   })
 })
@@ -166,20 +166,20 @@ describe('Command.parse — positional arguments', () => {
   it('captures a required positional variable', async () => {
     const cmd = new Command({ name: 'app', variables: '<name>' })
     cmd.action((o) => o)
-    const result = await parse(cmd, ['world']) as any
+    const result = (await parse(cmd, ['world'])) as any
     expect(result.name).toBe('world')
   })
 
   it('captures an optional positional variable', async () => {
     const cmd = new Command({ name: 'app', variables: '[dir]' })
     cmd.action((o) => o)
-    const result = await parse(cmd, ['./out']) as any
+    const result = (await parse(cmd, ['./out'])) as any
     expect(result.dir).toBe('./out')
   })
 
   it('populates _ for arguments after --', async () => {
     const cmd = new Command({ name: 'app' }).action((o) => o)
-    const result = await parse(cmd, ['--', 'a', 'b', 'c']) as any
+    const result = (await parse(cmd, ['--', 'a', 'b', 'c'])) as any
     expect(result._).toEqual(['a', 'b', 'c'])
   })
 })
@@ -200,7 +200,7 @@ describe('Command.parse — subcommands', () => {
     const child = new Command({ name: 'sub' })
     child.action((o) => o)
     parent.command(child)
-    const result = await parse(parent, ['--verbose', 'sub']) as any
+    const result = (await parse(parent, ['--verbose', 'sub'])) as any
     expect(result._parents?.app?.verbose).toBe(true)
   })
 
@@ -235,8 +235,13 @@ describe('Command.parse — middleware', () => {
   it('runs middleware before the action', async () => {
     const order: string[] = []
     const cmd = new Command({ name: 'app' })
-    cmd.middleware(async () => { order.push('mw') })
-    cmd.action(() => { order.push('action'); return order })
+    cmd.middleware(async () => {
+      order.push('mw')
+    })
+    cmd.action(() => {
+      order.push('action')
+      return order
+    })
     await parse(cmd, [])
     expect(order).toEqual(['mw', 'action'])
   })
@@ -245,7 +250,9 @@ describe('Command.parse — middleware', () => {
     let received: unknown
     const cmd = new Command({ name: 'app' })
     cmd.option('v', 'verbose', null, 'Verbose')
-    cmd.middleware(async (opts) => { received = opts })
+    cmd.middleware(async (opts) => {
+      received = opts
+    })
     cmd.action((o) => o)
     await parse(cmd, ['--verbose'])
     expect((received as any).verbose).toBe(true)
