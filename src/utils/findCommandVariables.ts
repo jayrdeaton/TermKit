@@ -1,12 +1,12 @@
 import type { Command } from '@/models/Command'
-import { findVariable } from '@/utils/findVariable'
+import { countReserved, findVariable } from '@/utils/findVariable'
 
 export async function findCommandVariables(array: string[], command: Command): Promise<Record<string, unknown> | null> {
   if (!command.variables) return null
 
   const result: Record<string, unknown> = {}
-  for (const variable of command.variables) {
-    const value = await findVariable(array, variable, command.commandStrings)
+  for (const [i, variable] of command.variables.entries()) {
+    const value = await findVariable(array, variable, command.commandStrings, countReserved(command.variables, i))
     if (value !== true) result[variable.name!] = value
   }
 

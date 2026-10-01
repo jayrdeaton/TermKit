@@ -177,6 +177,37 @@ describe('Command.parse — positional arguments', () => {
     expect(result.dir).toBe('./out')
   })
 
+  it('throws for a missing required positional when the command is invoked bare', async () => {
+    const cmd = new Command({ name: 'app', variables: '<file>' }).action((o) => o)
+    await expect(parse(cmd, [])).rejects.toThrow('Missing required variable <file>')
+  })
+
+  it('throws for a missing required positional when a subcommand is invoked bare', async () => {
+    const parent = new Command({ name: 'app' })
+    parent.command(new Command({ name: 'run', variables: '[dirs...] <command>' }).action((o) => o))
+    await expect(parse(parent, ['run'])).rejects.toThrow('Missing required variable <command>')
+  })
+
+  it('applies a positional default when the command is invoked bare', async () => {
+    const cmd = new Command({ name: 'app', variables: '[port:number=3000]' }).action((o) => o)
+    const result = (await parse(cmd, [])) as any
+    expect(result.port).toBe(3000)
+  })
+
+  it('runs the action with optional positionals unset when invoked bare', async () => {
+    const cmd = new Command({ name: 'app', variables: '[dir]' }).action((o) => o)
+    const result = (await parse(cmd, [])) as any
+    expect(result.dir).toBeUndefined()
+  })
+
+  it('prints help instead of throwing when a bare command with required positionals has no action', async () => {
+    const cmd = new Command({ name: 'orphan', variables: '<file>' })
+    const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {})
+    await expect(parse(cmd, [])).resolves.toBeUndefined()
+    expect(logSpy).toHaveBeenCalled()
+    logSpy.mockRestore()
+  })
+
   it('populates _ for arguments after --', async () => {
     const cmd = new Command({ name: 'app' }).action((o) => o)
     const result = (await parse(cmd, ['--', 'a', 'b', 'c'])) as any

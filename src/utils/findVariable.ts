@@ -48,11 +48,17 @@ async function promptForVariable(variable: Variable): Promise<unknown | null> {
   }).ask(`<${variable.name}>`)
 }
 
-export async function findVariable(array: string[], variable: Variable, commands: string[]): Promise<unknown> {
+export function countReserved(variables: Variable[], index: number): number {
+  return variables.slice(index + 1).filter((v) => v.required && !v.array).length
+}
+
+// `reserve` is how many trailing positional tokens an array variable must leave behind for required variables declared after it, so `[files...] <dest>` works like `cp`
+export async function findVariable(array: string[], variable: Variable, commands: string[], reserve = 0): Promise<unknown> {
   if (variable.array) {
     const result: unknown[] = []
-    while (array.length > 0 && !array[0].startsWith('-')) {
-      if (commands.includes(array[0])) break
+    let available = 0
+    while (available < array.length && !array[available].startsWith('-') && !commands.includes(array[available])) available++
+    for (let i = 0; i < available - reserve; i++) {
       result.push(coerce(array.shift()!, variable.type, variable.enum, variable.min, variable.max))
     }
     if (result.length === 0 && variable.required) {

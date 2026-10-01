@@ -101,6 +101,12 @@ Program.command('list', '[filter]')   // optional
 Program.command('tag', '[tags...]')   // array
 ```
 
+An array variable leaves enough trailing tokens for any required variables declared after it, so the last token can be a fixed slot:
+
+```ts
+Program.command('copy', '[files...] <dest>')   // copy a.txt b.txt out → files: ['a.txt', 'b.txt'], dest: 'out'
+```
+
 ### Middleware
 
 Middleware runs before the action. It can mutate the options object and supports async.

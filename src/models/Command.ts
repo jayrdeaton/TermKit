@@ -202,11 +202,14 @@ export class Command {
       array.splice(ddIdx, 1)
     }
 
+    // whether the current command's positionals have been resolved — not yet if no tokens followed it
+    let resolved = false
     while (array.length) {
       if (!array.includes('help') && !array.includes('version')) {
         Object.assign(options, await findOptions(array, command))
         const cmdVars = await findCommandVariables(array, command)
         if (cmdVars) Object.assign(options, cmdVars)
+        resolved = true
         Object.assign(options, await findOptions(array, command))
       }
       if (array.length) {
@@ -229,7 +232,14 @@ export class Command {
           }
         }
         command = next
+        resolved = false
       }
+    }
+
+    // a command with no action just prints help, so don't prompt for or reject its missing positionals
+    if (!resolved && command.actionFunction) {
+      const cmdVars = await findCommandVariables([], command)
+      if (cmdVars) Object.assign(options, cmdVars)
     }
 
     for (const opt of command.optionsArray) {

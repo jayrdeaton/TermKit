@@ -32,4 +32,24 @@ describe('findCommandVariables', () => {
     const result = await findCommandVariables(['a.txt', 'b.txt'], cmd)
     expect(result).toEqual({ src: 'a.txt', dest: 'b.txt' })
   })
+
+  it('leaves trailing tokens for required variables declared after an array', async () => {
+    const cmd = new Command({ name: 'test', variables: '[files...] <dest>' })
+    const array = ['a.txt', 'b.txt', 'out', '--force']
+    const result = await findCommandVariables(array, cmd)
+    expect(result).toEqual({ files: ['a.txt', 'b.txt'], dest: 'out' })
+    expect(array).toEqual(['--force'])
+  })
+
+  it('lets the array come up empty when only the reserved tokens are present', async () => {
+    const cmd = new Command({ name: 'test', variables: '[files...] <dest>' })
+    const result = await findCommandVariables(['out'], cmd)
+    expect(result).toEqual({ dest: 'out' })
+  })
+
+  it('still lets an array consume everything when only optional variables follow it', async () => {
+    const cmd = new Command({ name: 'test', variables: '[files...] [dest]' })
+    const result = await findCommandVariables(['a.txt', 'b.txt'], cmd)
+    expect(result).toEqual({ files: ['a.txt', 'b.txt'] })
+  })
 })
