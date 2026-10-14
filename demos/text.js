@@ -2,7 +2,7 @@ const { truncate, wrap, Color } = require('../dist')
 
 // ─── truncate ─────────────────────────────────────────────────────────────────
 
-console.log('— truncate —\n')
+console.log('truncate\n')
 
 const long = 'The quick brown fox jumps over the lazy dog near the riverbank'
 console.log('  original   ', long)
@@ -18,7 +18,7 @@ console.log()
 
 // ─── wrap ─────────────────────────────────────────────────────────────────────
 
-console.log('— wrap —\n')
+console.log('wrap\n')
 
 const para = 'This is a longer paragraph of text that would normally overflow a narrow terminal column and become difficult to read without proper word wrapping applied.'
 console.log('  wrap(40):\n')

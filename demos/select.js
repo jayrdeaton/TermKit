@@ -6,7 +6,7 @@ const F = Spinner.FRAMES
   const select = new Select()
 
   // ─── basic pick ──────────────────────────────────────────────────────────
-  console.log('— Basic pick —')
+  console.log('Basic pick')
   const framework = await select.ask('Which framework?', [
     { label: 'React' },
     { label: 'Vue' },
@@ -17,7 +17,7 @@ const F = Spinner.FRAMES
   console.log()
 
   // ─── with descriptions ───────────────────────────────────────────────────
-  console.log('— With descriptions —')
+  console.log('With descriptions')
   const env = await select.ask('Deploy target?', [
     { label: 'Production',  description: 'live traffic, locked deploys' },
     { label: 'Staging',     description: 'mirrors prod, QA sign-off required' },
@@ -27,7 +27,7 @@ const F = Spinner.FRAMES
   console.log()
 
   // ─── custom colors ───────────────────────────────────────────────────────
-  console.log('— Custom colors (orange prompt / dim description) —')
+  console.log('Custom colors (orange prompt / dim description)')
   const custom = new Select({ promptColor: '#f97316', descriptionColor: '#6b7280', skipLabel: 'None of these' })
   const lang = await custom.ask('Preferred language?', [
     { label: 'TypeScript', description: 'types all the way down' },
@@ -39,7 +39,7 @@ const F = Spinner.FRAMES
   console.log()
 
   // ─── search / filter ─────────────────────────────────────────────────────
-  console.log('— Search (type to filter) —')
+  console.log('Search (type to filter)')
   const searchSelect = new Select({ search: true, skipLabel: 'Cancel' })
   const pkg = await searchSelect.ask('Pick a package:', [
     { label: 'express',    description: 'HTTP framework' },
@@ -57,7 +57,7 @@ const F = Spinner.FRAMES
   console.log()
 
   // ─── scroll viewport ─────────────────────────────────────────────────────
-  console.log('— Scroll viewport (maxHeight: 5) —')
+  console.log('Scroll viewport (maxHeight: 5)')
   const scrollSelect = new Select({ maxHeight: 5 })
   const tz = await scrollSelect.ask('Timezone?', [
     { label: 'UTC' },
@@ -77,7 +77,7 @@ const F = Spinner.FRAMES
   console.log()
 
   // ─── search + scroll combined ────────────────────────────────────────────
-  console.log('— Search + scroll (type to filter, maxHeight: 4) —')
+  console.log('Search + scroll (type to filter, maxHeight: 4)')
   const searchScroll = new Select({ search: true, maxHeight: 4, skipLabel: 'Skip' })
   const country = await searchScroll.ask('Country?', [
     { label: 'United States' }, { label: 'United Kingdom' }, { label: 'Canada' },

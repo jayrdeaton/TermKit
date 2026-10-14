@@ -1,6 +1,6 @@
 import { getVariables } from '../../utils/getVariables'
 
-describe('getVariables — required variables', () => {
+describe('getVariables - required variables', () => {
   it('parses a basic required variable', () => {
     const vars = getVariables('<file>')
     expect(vars).toHaveLength(1)
@@ -11,7 +11,7 @@ describe('getVariables — required variables', () => {
   })
 })
 
-describe('getVariables — optional variables', () => {
+describe('getVariables - optional variables', () => {
   it('parses a basic optional variable', () => {
     const vars = getVariables('[dir]')
     expect(vars).toHaveLength(1)
@@ -21,7 +21,7 @@ describe('getVariables — optional variables', () => {
   })
 })
 
-describe('getVariables — array variables', () => {
+describe('getVariables - array variables', () => {
   it('parses an array variable', () => {
     const vars = getVariables('[files...]')
     expect(vars).toHaveLength(1)
@@ -32,7 +32,7 @@ describe('getVariables — array variables', () => {
   })
 })
 
-describe('getVariables — typed variables', () => {
+describe('getVariables - typed variables', () => {
   it('parses number type', () => {
     const vars = getVariables('<port:number>')
     expect(vars[0].type).toBe('number')
@@ -55,7 +55,7 @@ describe('getVariables — typed variables', () => {
   })
 })
 
-describe('getVariables — enum variables', () => {
+describe('getVariables - enum variables', () => {
   it('parses enum from pipe-delimited values', () => {
     const vars = getVariables('<mode:dev|test|prod>')
     expect(vars[0].type).toBe('enum')
@@ -68,7 +68,7 @@ describe('getVariables — enum variables', () => {
   })
 })
 
-describe('getVariables — range variables', () => {
+describe('getVariables - range variables', () => {
   it('parses min and max from range syntax', () => {
     const vars = getVariables('<n:number(1,10)>')
     expect(vars[0].type).toBe('number')
@@ -90,7 +90,7 @@ describe('getVariables — range variables', () => {
   })
 })
 
-describe('getVariables — default values', () => {
+describe('getVariables - default values', () => {
   it('parses a typed default', () => {
     const vars = getVariables('<port:number=3000>')
     expect(vars[0].default).toBe('3000')
@@ -110,7 +110,7 @@ describe('getVariables — default values', () => {
   })
 })
 
-describe('getVariables — multiple variables', () => {
+describe('getVariables - multiple variables', () => {
   it('parses multiple space-separated variables', () => {
     const vars = getVariables('<first> <second> [third]')
     expect(vars).toHaveLength(3)
@@ -128,7 +128,7 @@ describe('getVariables — multiple variables', () => {
   })
 })
 
-describe('getVariables — invalid format', () => {
+describe('getVariables - invalid format', () => {
   it('throws on an unrecognized variable format', () => {
     expect(() => getVariables('bare')).toThrow('Unrecognized variable description')
   })

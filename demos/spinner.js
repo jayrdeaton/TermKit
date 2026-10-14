@@ -8,20 +8,20 @@ function at(ms, fn) { setTimeout(fn, ms) }
 // ─── Spinner ───────────────────────────────────────────────────────────
 
 const spinnerConfigs = [
-  { label: 'braille — plain',             opts: { frames: F.braille } },
-  { label: 'braille — rainbow',           opts: { frames: F.braille, colors: C.rainbow } },
-  { label: 'braille — rainbow cycling',   opts: { frames: F.braille, colors: C.rainbow, colorCycle: 1.0 } },
-  { label: 'braille — heat + shimmer',    opts: { frames: F.braille, colors: C.heat, shimmer: 0.9 } },
-  { label: 'dots — rainbow cycling',      opts: { frames: F.dots, colors: C.rainbow, colorCycle: 0.5 } },
-  { label: 'line — plain',                opts: { frames: F.line } },
-  { label: 'line — blue → red',           opts: { frames: F.line, colors: C.blueRed } },
-  { label: 'arrow — rainbow + shimmer',   opts: { frames: F.arrow, colors: C.rainbow, colorCycle: 0.8, shimmer: 0.5 } },
-  { label: 'bounce — sunset cycling',     opts: { frames: F.bounce, colors: C.sunset, colorCycle: 2.0 } },
+  { label: 'braille: plain',             opts: { frames: F.braille } },
+  { label: 'braille: rainbow',           opts: { frames: F.braille, colors: C.rainbow } },
+  { label: 'braille: rainbow cycling',   opts: { frames: F.braille, colors: C.rainbow, colorCycle: 1.0 } },
+  { label: 'braille: heat + shimmer',    opts: { frames: F.braille, colors: C.heat, shimmer: 0.9 } },
+  { label: 'dots: rainbow cycling',      opts: { frames: F.dots, colors: C.rainbow, colorCycle: 0.5 } },
+  { label: 'line: plain',                opts: { frames: F.line } },
+  { label: 'line: blue → red',           opts: { frames: F.line, colors: C.blueRed } },
+  { label: 'arrow: rainbow + shimmer',   opts: { frames: F.arrow, colors: C.rainbow, colorCycle: 0.8, shimmer: 0.5 } },
+  { label: 'bounce: sunset cycling',     opts: { frames: F.bounce, colors: C.sunset, colorCycle: 2.0 } },
 ]
 
 const SPINNER_EACH = 3000
 
-console.log('— Spinner —')
+console.log('Spinner')
 
 const spinner = new Spinner({ interval: 80 })
 
@@ -44,7 +44,7 @@ at(TOTAL, () => spinner.succeed('All frame styles'))
 
 const UPDATE_START = TOTAL + 1000
 
-at(UPDATE_START - 500, () => { console.log(); console.log('— update() —') })
+at(UPDATE_START - 500, () => { console.log(); console.log('update()') })
 
 at(UPDATE_START, () => {
   const s = new Spinner('Starting…', { frames: F.braille, interval: 80 })
@@ -59,7 +59,7 @@ at(UPDATE_START, () => {
 
 const PREFIX_START = UPDATE_START + 4500
 
-at(PREFIX_START - 500, () => { console.log(); console.log('— prefix() / suffix() —') })
+at(PREFIX_START - 500, () => { console.log(); console.log('prefix() / suffix()') })
 
 at(PREFIX_START, () => {
   const total = 8
@@ -79,7 +79,7 @@ at(PREFIX_START, () => {
 
 const LOG_START = PREFIX_START + 5500
 
-at(LOG_START - 500, () => { console.log(); console.log('— log() —') })
+at(LOG_START - 500, () => { console.log(); console.log('log()') })
 
 at(LOG_START, () => {
   const s = new Spinner('Deploying…', { frames: F.braille, interval: 80 })
@@ -96,7 +96,7 @@ at(LOG_START, () => {
 
 const STATUS_START = LOG_START + 6000
 
-at(STATUS_START - 500, () => { console.log(); console.log('— Status methods —') })
+at(STATUS_START - 500, () => { console.log(); console.log('Status methods') })
 
 const statusExamples = [
   { method: 'succeed', message: 'Build complete' },

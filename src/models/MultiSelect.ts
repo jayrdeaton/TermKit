@@ -137,7 +137,7 @@ export class MultiSelect {
 
       if (redraw) {
         if (lastDrawnLines > 0) process.stdout.write(CURSOR_UP(lastDrawnLines))
-        // \r snaps to col 0 before clearing — \x1b[0J alone starts from whatever
+        // \r snaps to col 0 before clearing - \x1b[0J alone starts from whatever
         // column the cursor landed on after the previous render's final \n
         process.stdout.write('\r\x1b[0J')
       }
@@ -150,7 +150,7 @@ export class MultiSelect {
 
       const pulse = this.pulseColor()
       // Item rows (label + description) come from caller data and can exceed
-      // terminal width — truncate the same way the hint line below does, so a
+      // terminal width - truncate the same way the hint line below does, so a
       // long row can't wrap and desync lastDrawnLines even if the terminal
       // doesn't fully honor DISABLE_WRAP.
       const maxRowCols = Math.max(10, (process.stdout.columns ?? 80) - stringLength(indent) - 1)
@@ -159,7 +159,7 @@ export class MultiSelect {
         const isCursor = vi === cursor
         const isChecked = checked.has(originalIndex)
         const numStr = `${vi + 1}.`
-        const desc = item.description ? ` ${colorText(this.descriptionColor, `— ${item.description}`)}` : ''
+        const desc = item.description ? ` ${colorText(this.descriptionColor, `- ${item.description}`)}` : ''
         const checkMark = isChecked ? (pulse ? `${pulse}${this.checkedPrefix}${RESET}` : colorText(this.promptColor, this.checkedPrefix)) : this.uncheckedPrefix
         const label = isCursor ? (pulse ? `${pulse}${item.label}${RESET}` : colorText(this.promptColor, item.label)) : item.label
         const row = truncate(`${numStr} ${checkMark} ${label}${desc}`, maxRowCols)
@@ -167,7 +167,7 @@ export class MultiSelect {
         lastDrawnLines++
       }
 
-      // Truncate hint to terminal width so it never wraps to an extra row —
+      // Truncate hint to terminal width so it never wraps to an extra row -
       // a wrapped hint would make lastDrawnLines off by 1 and cause drift
       const hintContent = `↑↓ move  space/tab toggle  ←→ deselect/select${this.searchEnabled ? '  type to filter' : '  1-9 jump  a all'}  enter confirm`
       const maxHintCols = Math.max(10, (process.stdout.columns ?? 80) - stringLength(indent) - 1)
@@ -207,7 +207,7 @@ export class MultiSelect {
         process.stdout.write('\r\x1b[0J')
         process.stdout.write(ENABLE_WRAP)
         const selectedItems = items.filter((_, i) => checked.has(i))
-        const display = result !== null && selectedItems.length > 0 ? selectedItems.map((i) => i.label).join(', ') : '—'
+        const display = result !== null && selectedItems.length > 0 ? selectedItems.map((i) => i.label).join(', ') : '-'
         process.stdout.write(`${glyph}${prompt}: ${display}\n`)
         process.stdin.setRawMode(false)
         process.stdin.pause()

@@ -2,7 +2,7 @@ const { Log, log, markup } = require('../dist')
 
 // ─── Singleton log ────────────────────────────────────────────────────────────
 
-console.log('— Status methods —\n')
+console.log('Status methods\n')
 
 log.succeed('Build complete')
 log.fail('Connection refused')
@@ -11,7 +11,7 @@ log.info('Listening on port 3000')
 
 // ─── data() ───────────────────────────────────────────────────────────────────
 
-console.log('\n— log.data() —\n')
+console.log('\nlog.data()\n')
 
 log.data({ user: 'alice', role: 'admin', active: true, score: 42 })
 
@@ -30,7 +30,7 @@ log.data({
 
 // ─── Custom instance ──────────────────────────────────────────────────────────
 
-console.log('\n— Custom colors —\n')
+console.log('\nCustom colors\n')
 
 const purple = new Log({ successColor: '#a855f7' })
 purple.succeed('Custom success color')

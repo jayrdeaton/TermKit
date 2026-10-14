@@ -22,7 +22,7 @@ const build = command('build', '[target]', 'Build the project')
     const spinner = new Spinner({ text: `Building ${target}…` })
     spinner.start()
     await new Promise(r => setTimeout(r, 1400))
-    spinner.succeed(`Build complete — ${target}`)
+    spinner.succeed(`Build complete: ${target}`)
     if (options.watch) log.info('Watching for changes…')
   })
 
@@ -31,7 +31,7 @@ const test = command('test', '[suite]', 'Run the test suite')
   .option('w', 'watch', null, 'Re-run on file changes')
   .action(async (options) => {
     const suite = options.suite ?? 'all'
-    const spinner = new Spinner({ text: `Running tests — ${suite}…` })
+    const spinner = new Spinner({ text: `Running tests: ${suite}…` })
     spinner.start()
     await new Promise(r => setTimeout(r, 1200))
     const passed = Math.floor(Math.random() * 40) + 60
@@ -53,16 +53,16 @@ const program = command('myapp', null, 'A sample TermKit CLI application')
 
   if (args.length === 0) {
     // Show help, then simulate a deploy run
-    console.log('— Help output —\n')
+    console.log('Help output\n')
     program.help()
 
-    console.log('— Simulated: myapp deploy staging --tag v1.2.3 —\n')
+    console.log('Simulated: myapp deploy staging --tag v1.2.3\n')
     await program.parse(['node', 'myapp', 'deploy', 'staging', '--tag', 'v1.2.3'])
 
-    console.log('\n— Simulated: myapp build --watch —\n')
+    console.log('\nSimulated: myapp build --watch\n')
     await program.parse(['node', 'myapp', 'build', '--watch'])
 
-    console.log('\n— Simulated: myapp test --coverage —\n')
+    console.log('\nSimulated: myapp test --coverage\n')
     await program.parse(['node', 'myapp', 'test', '--coverage'])
   } else {
     await program.parse(['node', 'myapp', ...args])

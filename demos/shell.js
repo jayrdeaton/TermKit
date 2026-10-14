@@ -30,7 +30,7 @@ const build = Program.command('build', '[target]', 'Build the project')
     const spinner = new Spinner({ text: `Building ${target}…` })
     spinner.start()
     await new Promise(r => setTimeout(r, 1200))
-    spinner.succeed(`Build complete — ${target}`)
+    spinner.succeed(`Build complete: ${target}`)
     if (options.watch) log.info('Watching for changes…')
   })
 
@@ -38,7 +38,7 @@ const test = Program.command('test', '[suite]', 'Run the test suite')
   .option('c', 'coverage', null, 'Collect coverage report')
   .action(async (options) => {
     const suite = options.suite ?? 'all'
-    const spinner = new Spinner({ text: `Running tests — ${suite}…` })
+    const spinner = new Spinner({ text: `Running tests: ${suite}…` })
     spinner.start()
     await new Promise(r => setTimeout(r, 1000))
     const passed = Math.floor(Math.random() * 40) + 60
@@ -58,7 +58,7 @@ const free = process.argv.includes('--free')
     mode: free ? 'free' : 'drill',
     promptColor: '#a855f7',
     banner: free
-      ? 'myapp shell  (free mode — type full commands, "exit" to quit)'
-      : 'myapp shell  (drill mode — navigate step by step, empty line at root to quit)',
+      ? 'myapp shell  (free mode: type full commands, "exit" to quit)'
+      : 'myapp shell  (drill mode: navigate step by step, empty line at root to quit)',
   })
 })()

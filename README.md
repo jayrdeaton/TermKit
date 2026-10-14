@@ -1,6 +1,6 @@
 # TermKit
 
-TermKit is a complete terminal toolkit for Node.js. Build CLI programs with a fluent command API — nested subcommands, middleware, typed options — then prompt users interactively, render progress bars, tables, and charts, all from a single package with full TypeScript support.
+TermKit is a complete terminal toolkit for Node.js. Build CLI programs with a fluent command API - nested subcommands, middleware, typed options - then prompt users interactively, render progress bars, tables, and charts, all from a single package with full TypeScript support.
 
 ## Installation
 
@@ -144,7 +144,7 @@ my-app help
 my-app serve help
 ```
 
-Commands defined without an `.action()` print their help automatically when invoked. This makes parent commands that only group subcommands self-documenting — running `my-app` or `my-app serve` with no further input shows usage instead of erroring.
+Commands defined without an `.action()` print their help automatically when invoked. This makes parent commands that only group subcommands self-documenting - running `my-app` or `my-app serve` with no further input shows usage instead of erroring.
 
 ### Shell
 
@@ -155,13 +155,13 @@ import { Program } from 'termkit'
 
 // ...define commands with Program.command(...)
 
-await Program.shell({ banner: 'myapp shell — type "help", "exit" to quit' })
+await Program.shell({ banner: 'myapp shell - type "help", "exit" to quit' })
 ```
 
 Two modes:
 
-- **`drill`** (default) — step through the tree one level at a time. Each prompt lists the available subcommands; type a name to descend, `..` to go back up, `help` to print usage, or an exit command to quit. Leaf commands prompt for each declared variable in turn, then run. An empty line at the root exits.
-- **`free`** — type full command lines as you would on the CLI, with Tab completion across the command tree. `exit`/`quit` to leave.
+- **`drill`** (default): step through the tree one level at a time. Each prompt lists the available subcommands; type a name to descend, `..` to go back up, `help` to print usage, or an exit command to quit. Leaf commands prompt for each declared variable in turn, then run. An empty line at the root exits.
+- **`free`**: type full command lines as you would on the CLI, with Tab completion across the command tree. `exit`/`quit` to leave.
 
 ```ts
 await Program.shell({ mode: 'free', promptColor: '#a855f7' })
@@ -171,7 +171,7 @@ Options: `mode` (`'drill' | 'free'`, default `'drill'`), `prompt` (free-mode pro
 
 ### configure
 
-Sets global display options for the entire toolkit — accent color used in help output, tables, charts, and prompts; plus Unicode glyph support.
+Sets global display options for the entire toolkit - accent color used in help output, tables, charts, and prompts; plus Unicode glyph support.
 
 ```ts
 import { configure } from 'termkit'
@@ -220,7 +220,7 @@ const env = await select('Deploy target?', [
 ])
 ```
 
-Pass `search: true` to add a type-to-filter input. Typing narrows the list; Backspace removes the last character. Number shortcuts are disabled in search mode — use ↑↓.
+Pass `search: true` to add a type-to-filter input. Typing narrows the list; Backspace removes the last character. Number shortcuts are disabled in search mode - use ↑↓.
 
 ```ts
 const pkg = await select('Pick a package:', packages, { search: true })
@@ -302,7 +302,7 @@ logger.succeed('Custom color')
 
 ### markup
 
-Pretty-prints any value with syntax coloring — strings, numbers, booleans, `null`, `Date`, nested objects, and arrays.
+Pretty-prints any value with syntax coloring - strings, numbers, booleans, `null`, `Date`, nested objects, and arrays.
 
 ```ts
 import { markup } from 'termkit'
@@ -342,7 +342,7 @@ const rows = [
 new Table(rows).print()
 ```
 
-Column configuration — pass a `columns` array to control ordering, titles, alignment, and value formatting:
+Column configuration - pass a `columns` array to control ordering, titles, alignment, and value formatting:
 
 ```ts
 new Table(rows, {
@@ -571,7 +571,7 @@ Update the inline label while running:
 bar.update('Uploading assets…')
 ```
 
-Write a persistent log line while the bar keeps running. The default glyph is a faint `·`; pass any string — plain or pre-colored — as the second argument to override it:
+Write a persistent log line while the bar keeps running. The default glyph is a faint `·`; pass any string - plain or pre-colored - as the second argument to override it:
 
 ```ts
 bar.log('Processed batch 3')
@@ -595,7 +595,7 @@ for await (const item of items) {
   bar.tick()
 }
 
-bar.succeed(`Done — ${total} files processed`)
+bar.succeed(`Done - ${total} files processed`)
 ```
 
 Each `tick(n?)` increments the completed count, updates `progress`, and appends a live `12.3/s · ETA 8s` suffix that shrinks the bar to keep the full line within terminal width.
@@ -611,7 +611,7 @@ Options on `track(total, opts?)`: `unit` (label appended to rate), `showRate` (d
 
 #### Bar.current
 
-`Bar.current` follows the same pattern as `Spinner.current` — set on `.start()`, cleared on any terminal method. Use it to reach the active bar from deep in processing loops or error handlers:
+`Bar.current` follows the same pattern as `Spinner.current` - set on `.start()`, cleared on any terminal method. Use it to reach the active bar from deep in processing loops or error handlers:
 
 ```ts
 const bar = new Bar('Processing…', { progress: 0 })
@@ -652,13 +652,13 @@ deploy.succeed('Deployed')
 multi.stop()
 ```
 
-Each `add()` call accepts the same options as `Bar` and returns a `Bar` instance — `.update()`, `.tick()`, `.track()`, `.progress`, and the completion methods all work the same way. Bars must be added before `.start()`.
+Each `add()` call accepts the same options as `Bar` and returns a `Bar` instance - `.update()`, `.tick()`, `.track()`, `.progress`, and the completion methods all work the same way. Bars must be added before `.start()`.
 
 Options: `interval`.
 
 ### Spinner
 
-Animated spinner for indeterminate work. Shares the same completion API as `Bar` — `.succeed()`, `.fail()`, `.warn()`, `.info()`.
+Animated spinner for indeterminate work. Shares the same completion API as `Bar` - `.succeed()`, `.fail()`, `.warn()`, `.info()`.
 
 ```ts
 import { Spinner } from 'termkit'
@@ -693,9 +693,9 @@ spinner.prefix(String(count))   // ⠋ 42 files copied
 spinner.suffix('(estimating…)') // ⠋ 42 files copied (estimating…)
 ```
 
-All three — `update()`, `prefix()`, and `suffix()` — are chainable and can be called while the spinner is running.
+All three - `update()`, `prefix()`, and `suffix()` - are chainable and can be called while the spinner is running.
 
-Write a persistent log line while the spinner keeps running. The default glyph is a faint `·`; pass any string — plain or pre-colored — as the second argument to override it:
+Write a persistent log line while the spinner keeps running. The default glyph is a faint `·`; pass any string - plain or pre-colored - as the second argument to override it:
 
 ```ts
 spinner.log('Fetched 42 items')
@@ -704,7 +704,7 @@ spinner.log('Fetched 42 items', Color.hex('#00ff00')('✔'))
 spinner.log('Fetched 42 items', '')  // no glyph
 ```
 
-The completion methods accept a custom glyph color via `successColor`, `failColor`, `warnColor`, and `infoColor` — the glyph is colored, the message text is left unstyled:
+The completion methods accept a custom glyph color via `successColor`, `failColor`, `warnColor`, and `infoColor` - the glyph is colored, the message text is left unstyled:
 
 ```ts
 const spinner = new Spinner('Deploying…', { successColor: '#a855f7', failColor: '#ef4444' })
@@ -727,7 +727,7 @@ Spinner.current?.update('Uploading assets…')
 // in a catch block
 Spinner.current?.fail(`Deploy failed: ${err.message}`)
 
-// in a SIGTERM handler — ?. is intentional: a spinner may not be running
+// in a SIGTERM handler - ?. is intentional: a spinner may not be running
 process.on('SIGTERM', () => Spinner.current?.stop('Interrupted'))
 ```
 
@@ -831,7 +831,7 @@ console.log(wrap(longParagraph, 60))
 
 ## Authors
 
-**Jay Deaton** — [GitHub](https://github.com/jayrdeaton)
+**Jay Deaton** - [GitHub](https://github.com/jayrdeaton)
 
 ## License
 

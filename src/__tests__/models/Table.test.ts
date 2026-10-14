@@ -2,7 +2,7 @@ import { Table } from '../../models/Table'
 
 const strip = (s: string) => s.replace(/\x1b\[[^a-zA-Z]*[a-zA-Z]/g, '')
 
-describe('Table constructor — basic rendering', () => {
+describe('Table constructor - basic rendering', () => {
   it('produces a non-empty string', () => {
     const t = new Table([{ name: 'Alice', age: 30 }])
     expect(t.string.length).toBeGreaterThan(0)
@@ -35,7 +35,7 @@ describe('Table constructor — basic rendering', () => {
   })
 })
 
-describe('Table constructor — explicit columns', () => {
+describe('Table constructor - explicit columns', () => {
   it('only renders columns listed in options', () => {
     const rows = [{ name: 'Alice', secret: 'hidden' }]
     const t = new Table(rows, { columns: ['name'] })
@@ -77,7 +77,7 @@ describe('Table width getter', () => {
   })
 })
 
-describe('Table — title option', () => {
+describe('Table - title option', () => {
   it('includes the title in the output', () => {
     const t = new Table([{ x: 1 }], { title: 'My Table' })
     expect(strip(t.string)).toContain('My Table')
@@ -89,7 +89,7 @@ describe('Table — title option', () => {
   })
 })
 
-describe('Table — meta rows', () => {
+describe('Table - meta rows', () => {
   it('includes meta row values in the output', () => {
     const rows = [{ label: 'Alice', score: 10 }]
     const meta = [{ label: 'Total', score: 10 }]
@@ -105,7 +105,7 @@ describe('Table — meta rows', () => {
   })
 })
 
-describe('Table — align option', () => {
+describe('Table - align option', () => {
   it('accepts left align', () => {
     const t = new Table([{ x: 1 }], { align: 'left' })
     expect(t.align).toBe('left')
@@ -122,7 +122,7 @@ describe('Table — align option', () => {
   })
 })
 
-describe('Table — margin option', () => {
+describe('Table - margin option', () => {
   it('defaults to 0', () => {
     const t = new Table([{ x: 1 }])
     expect(t.margin).toBe(0)
@@ -135,7 +135,7 @@ describe('Table — margin option', () => {
   })
 })
 
-describe('Table — print()', () => {
+describe('Table - print()', () => {
   it('writes to process.stdout', () => {
     const spy = jest.spyOn(process.stdout, 'write').mockImplementation(() => true)
     const t = new Table([{ x: 1 }])
@@ -145,7 +145,7 @@ describe('Table — print()', () => {
   })
 })
 
-describe('Table — static alignment constants', () => {
+describe('Table - static alignment constants', () => {
   it('exposes left, center, right constants', () => {
     expect(Table.left).toBe('left')
     expect(Table.center).toBe('center')

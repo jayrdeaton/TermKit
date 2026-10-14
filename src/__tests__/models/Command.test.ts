@@ -107,7 +107,7 @@ describe('Command builder API', () => {
   })
 })
 
-describe('Command.parse — flags and options', () => {
+describe('Command.parse - flags and options', () => {
   it('long flag with no variable resolves to true', async () => {
     const cmd = new Command({ name: 'app' })
     cmd.option('v', 'verbose', null, 'Verbose').action((o) => o)
@@ -162,7 +162,7 @@ describe('Command.parse — flags and options', () => {
   })
 })
 
-describe('Command.parse — positional arguments', () => {
+describe('Command.parse - positional arguments', () => {
   it('captures a required positional variable', async () => {
     const cmd = new Command({ name: 'app', variables: '<name>' })
     cmd.action((o) => o)
@@ -215,7 +215,7 @@ describe('Command.parse — positional arguments', () => {
   })
 })
 
-describe('Command.parse — subcommands', () => {
+describe('Command.parse - subcommands', () => {
   it('routes to a matching subcommand', async () => {
     const parent = new Command({ name: 'app' })
     const child = new Command({ name: 'start' })
@@ -241,7 +241,7 @@ describe('Command.parse — subcommands', () => {
   })
 })
 
-describe('Command.parse — errors', () => {
+describe('Command.parse - errors', () => {
   it('throws on unknown long option', async () => {
     const cmd = new Command({ name: 'app' }).action((o) => o)
     await expect(parse(cmd, ['--unknown'])).rejects.toThrow('Unknown Option: --unknown')
@@ -262,7 +262,7 @@ describe('Command.parse — errors', () => {
   })
 })
 
-describe('Command.parse — middleware', () => {
+describe('Command.parse - middleware', () => {
   it('runs middleware before the action', async () => {
     const order: string[] = []
     const cmd = new Command({ name: 'app' })

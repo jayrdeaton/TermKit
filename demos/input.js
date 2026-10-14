@@ -1,7 +1,7 @@
 const { input, confirm, Spinner } = require('../dist')
 
 ;(async () => {
-  console.log('— Server Setup Wizard —\n')
+  console.log('Server Setup Wizard\n')
 
   const name = await input('Project name?', { minLength: 2, maxLength: 20, default: 'my-app' })
 
@@ -28,13 +28,13 @@ const { input, confirm, Spinner } = require('../dist')
     if (confirmPass !== secret) console.log('\n  Passwords do not match, try again\n')
   } while (confirmPass !== secret)
 
-  console.log('\n— Inline —\n')
+  console.log('\nInline\n')
 
   const host = await input('Host:', { inline: true, default: 'localhost' })
   const inlinePort = await input('Port:', { inline: true, type: 'number', default: 8080, min: 1, max: 65535 })
   const debug = await input('Debug?', { inline: true, type: 'boolean', default: false })
 
-  console.log('\n— confirm() shorthand —\n')
+  console.log('\nconfirm() shorthand\n')
 
   const deploy = await confirm('Deploy to production?', { default: false })
   console.log(`  Answer: ${deploy}`)

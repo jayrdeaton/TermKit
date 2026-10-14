@@ -10,12 +10,12 @@ const users = [
 
 // ─── Auto columns ─────────────────────────────────────────────────────────────
 
-console.log('— Auto columns —\n')
+console.log('Auto columns\n')
 new Table(users).print()
 
 // ─── Column config ────────────────────────────────────────────────────────────
 
-console.log('\n— Column config —\n')
+console.log('\nColumn config\n')
 new Table(users, {
   title: 'User List',
   columns: [
@@ -29,12 +29,12 @@ new Table(users, {
 
 // ─── String shorthand ─────────────────────────────────────────────────────────
 
-console.log('\n— String shorthand columns —\n')
+console.log('\nString shorthand columns\n')
 new Table(users, { columns: ['name', 'role'] }).print()
 
 // ─── Alignment ────────────────────────────────────────────────────────────────
 
-console.log('\n— Center aligned —\n')
+console.log('\nCenter aligned\n')
 new Table(users, {
   align: Table.center,
   columns: ['name', 'role', 'score'],
@@ -42,7 +42,7 @@ new Table(users, {
 
 // ─── Meta rows ────────────────────────────────────────────────────────────────
 
-console.log('\n— With meta row —\n')
+console.log('\nWith meta row\n')
 
 const total = users.reduce((sum, u) => sum + u.score, 0)
 const avg   = Math.round(total / users.length)

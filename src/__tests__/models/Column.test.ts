@@ -1,6 +1,6 @@
 import { Column } from '../../models/Column'
 
-describe('Column — string shorthand', () => {
+describe('Column - string shorthand', () => {
   it('sets key and title from a plain string', () => {
     const col = new Column('name')
     expect(col.key).toBe('name')
@@ -13,7 +13,7 @@ describe('Column — string shorthand', () => {
   })
 })
 
-describe('Column — options object', () => {
+describe('Column - options object', () => {
   it('accepts a key with an explicit title', () => {
     const col = new Column({ key: 'n', title: 'Name' })
     expect(col.key).toBe('n')

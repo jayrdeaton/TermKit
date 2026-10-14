@@ -8,7 +8,7 @@ function makeCmd(opts: Option[]): Command {
   return cmd
 }
 
-describe('findOptions — long flags', () => {
+describe('findOptions - long flags', () => {
   it('parses a boolean long flag', async () => {
     const cmd = makeCmd([new Option({ long: 'verbose' })])
     const arr = ['--verbose']
@@ -43,7 +43,7 @@ describe('findOptions — long flags', () => {
   })
 })
 
-describe('findOptions — short flags', () => {
+describe('findOptions - short flags', () => {
   it('parses a boolean short flag', async () => {
     const cmd = makeCmd([new Option({ short: 'v', long: 'verbose' })])
     const arr = ['-v']
@@ -66,7 +66,7 @@ describe('findOptions — short flags', () => {
   })
 })
 
-describe('findOptions — stops at non-flag tokens', () => {
+describe('findOptions - stops at non-flag tokens', () => {
   it('stops processing when the next token does not start with -', async () => {
     const cmd = makeCmd([new Option({ long: 'verbose' })])
     const arr = ['--verbose', 'file.txt']
@@ -80,7 +80,7 @@ describe('findOptions — stops at non-flag tokens', () => {
   })
 })
 
-describe('findOptions — multiple flags', () => {
+describe('findOptions - multiple flags', () => {
   it('collects multiple long flags', async () => {
     const cmd = makeCmd([new Option({ long: 'verbose' }), new Option({ long: 'force' })])
     const result = await findOptions(['--verbose', '--force'], cmd)

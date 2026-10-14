@@ -2,7 +2,7 @@ const { markup, Color } = require('../dist')
 
 // ─── Primitives ───────────────────────────────────────────────────────────────
 
-console.log('— Primitives —\n')
+console.log('Primitives\n')
 console.log(markup('hello world'))
 console.log(markup(42))
 console.log(markup(9007199254740993n))
@@ -14,12 +14,12 @@ console.log(markup(new Date()))
 
 // ─── Flat object ──────────────────────────────────────────────────────────────
 
-console.log('\n— Flat object —\n')
+console.log('\nFlat object\n')
 console.log(markup({ name: 'alice', role: 'admin', active: true, score: 99 }))
 
 // ─── Nested object ────────────────────────────────────────────────────────────
 
-console.log('\n— Nested object —\n')
+console.log('\nNested object\n')
 console.log(markup({
   server: {
     host: 'localhost',
@@ -33,7 +33,7 @@ console.log(markup({
 
 // ─── Array ────────────────────────────────────────────────────────────────────
 
-console.log('\n— Array —\n')
+console.log('\nArray\n')
 console.log(markup([
   { id: 1, name: 'Alice', active: true },
   { id: 2, name: 'Bob',   active: false },
@@ -42,7 +42,7 @@ console.log(markup([
 
 // ─── Custom styles ────────────────────────────────────────────────────────────
 
-console.log('\n— Custom styles —\n')
+console.log('\nCustom styles\n')
 console.log(markup(
   { count: 42, label: 'requests', ok: true, error: null },
   {
@@ -56,7 +56,7 @@ console.log(markup(
 
 // ─── Translations ─────────────────────────────────────────────────────────────
 
-console.log('\n— Translations —\n')
+console.log('\nTranslations\n')
 console.log(markup(
   { name: 'deploy-job', createdAt: '2024-01-15T10:30:00Z', updatedAt: '2024-06-01T08:00:00Z' },
   { translations: { createdAt: (v) => new Date(v), updatedAt: (v) => new Date(v) } }

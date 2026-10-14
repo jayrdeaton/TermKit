@@ -14,7 +14,7 @@ const mockClearLine = jest.spyOn(process.stdout, 'clearLine').mockImplementation
 const frames = () => mockWrite.mock.calls.filter((c) => !(c[0] as string).startsWith(`\x1b[?25`)).map((c) => c[0] as string)
 const firstFrame = () => frames()[0]
 
-// frames start with \r and end with \x1b[K — strip those plus the leading [ and trailing ] to get inner content
+// frames start with \r and end with \x1b[K - strip those plus the leading [ and trailing ] to get inner content
 const innerContent = (frame: string) => frame.slice(2, -4)
 
 beforeEach(() => {

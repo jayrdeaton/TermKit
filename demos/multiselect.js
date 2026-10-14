@@ -2,7 +2,7 @@ const { multiSelect, MultiSelect, Spinner } = require('../dist')
 
 ;(async () => {
   // ─── basic multi-pick ────────────────────────────────────────────────────────
-  console.log('— Basic multi-pick —')
+  console.log('Basic multi-pick')
   const features = await multiSelect('Which features to enable?', [
     { label: 'Authentication' },
     { label: 'Rate limiting' },
@@ -14,7 +14,7 @@ const { multiSelect, MultiSelect, Spinner } = require('../dist')
   console.log()
 
   // ─── with descriptions ───────────────────────────────────────────────────────
-  console.log('— With descriptions —')
+  console.log('With descriptions')
   const deps = await multiSelect('Add dependencies?', [
     { label: 'zod',    description: 'schema validation' },
     { label: 'axios',  description: 'HTTP client' },
@@ -25,7 +25,7 @@ const { multiSelect, MultiSelect, Spinner } = require('../dist')
   console.log()
 
   // ─── min / max constraints ───────────────────────────────────────────────────
-  console.log('— Pick exactly 2 roles (min 2, max 2) —')
+  console.log('Pick exactly 2 roles (min 2, max 2)')
   const roles = await multiSelect('Assign roles:', [
     { label: 'viewer' },
     { label: 'editor' },
@@ -36,7 +36,7 @@ const { multiSelect, MultiSelect, Spinner } = require('../dist')
   console.log()
 
   // ─── custom colors ───────────────────────────────────────────────────────────
-  console.log('— Custom colors —')
+  console.log('Custom colors')
   const custom = new MultiSelect({
     promptColor: '#f97316',
     colors: ['#f97316', '#facc15'],
@@ -53,7 +53,7 @@ const { multiSelect, MultiSelect, Spinner } = require('../dist')
   console.log()
 
   // ─── search / filter ─────────────────────────────────────────────────────────
-  console.log('— Search + multi-pick (type to filter) —')
+  console.log('Search + multi-pick (type to filter)')
   const searched = await multiSelect('Select npm packages:', [
     { label: 'zod',       description: 'schema validation' },
     { label: 'valibot',   description: 'modular schema validation' },
@@ -72,7 +72,7 @@ const { multiSelect, MultiSelect, Spinner } = require('../dist')
   console.log()
 
   // ─── scroll viewport ─────────────────────────────────────────────────────────
-  console.log('— Scroll viewport (maxHeight: 5) —')
+  console.log('Scroll viewport (maxHeight: 5)')
   const scrolled = await multiSelect('Pick regions to deploy to:', [
     { label: 'us-east-1',      description: 'N. Virginia' },
     { label: 'us-west-2',      description: 'Oregon' },

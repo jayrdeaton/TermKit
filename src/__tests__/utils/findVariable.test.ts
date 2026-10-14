@@ -1,7 +1,7 @@
 import { Variable } from '../../models/Variable'
 import { coerce, findVariable } from '../../utils/findVariable'
 
-describe('coerce — numeric types', () => {
+describe('coerce - numeric types', () => {
   it('converts a string to number', () => {
     expect(coerce('42', 'number', null)).toBe(42)
   })
@@ -35,7 +35,7 @@ describe('coerce — numeric types', () => {
   })
 })
 
-describe('coerce — string type', () => {
+describe('coerce - string type', () => {
   it('returns the string unchanged', () => {
     expect(coerce('hello', 'string', null)).toBe('hello')
   })
@@ -57,7 +57,7 @@ describe('coerce — string type', () => {
   })
 })
 
-describe('coerce — boolean type', () => {
+describe('coerce - boolean type', () => {
   it('returns true for "true"', () => {
     expect(coerce('true', 'boolean', null)).toBe(true)
   })
@@ -69,7 +69,7 @@ describe('coerce — boolean type', () => {
   })
 })
 
-describe('coerce — enum type', () => {
+describe('coerce - enum type', () => {
   it('returns the value when it is in the enum', () => {
     expect(coerce('b', 'enum', ['a', 'b', 'c'])).toBe('b')
   })
@@ -79,7 +79,7 @@ describe('coerce — enum type', () => {
   })
 })
 
-describe('findVariable — single value', () => {
+describe('findVariable - single value', () => {
   const noCommands: string[] = []
 
   it('reads and shifts the first value from the array', async () => {
@@ -119,7 +119,7 @@ describe('findVariable — single value', () => {
   })
 })
 
-describe('findVariable — array mode', () => {
+describe('findVariable - array mode', () => {
   const noCommands: string[] = []
 
   it('collects all non-flag values from the array', async () => {

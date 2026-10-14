@@ -41,7 +41,7 @@ export class Variable {
   get hint(): string | null {
     const parts: string[] = []
     if (this.type === 'enum' && this.enum) parts.push(this.enum.join('|'))
-    if (this.min !== null && this.max !== null) parts.push(`${this.min}–${this.max}`)
+    if (this.min !== null && this.max !== null) parts.push(`${this.min}-${this.max}`)
     else if (this.min !== null) parts.push(`>= ${this.min}`)
     else if (this.max !== null) parts.push(`<= ${this.max}`)
     if (this.default !== null) parts.push(`default: ${this.default}`)

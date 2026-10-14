@@ -2,7 +2,7 @@ const { Chart, Color } = require('../dist')
 
 // ─── Chart.Bar ────────────────────────────────────────────────────────────────
 
-console.log('— Chart.Bar — basic —\n')
+console.log('Chart.Bar basic -\n')
 new Chart.Bar([
   { key: 'Mon', value: 42 },
   { key: 'Tue', value: 67 },
@@ -11,7 +11,7 @@ new Chart.Bar([
   { key: 'Fri', value: 54 },
 ]).print()
 
-console.log('\n— Chart.Bar — styled + gaps —\n')
+console.log('\nChart.Bar styled + gaps -\n')
 new Chart.Bar([
   { key: 'Errors',   value: 12, style: (s) => Color.red(s) },
   { key: 'Warnings', value: 45, style: (s) => Color.yellow(s) },
@@ -19,7 +19,7 @@ new Chart.Bar([
   { key: 'OK',       value: 89, style: (s) => Color.green(s) },
 ]).print()
 
-console.log('\n— Chart.Bar — custom character —\n')
+console.log('\nChart.Bar custom character -\n')
 new Chart.Bar([
   { key: 'CPU', value: 72, character: '▪' },
   { key: 'RAM', value: 55, character: '▪' },
@@ -28,7 +28,7 @@ new Chart.Bar([
 
 // ─── Chart.VerticalBar ─────────────────────────────────────────────────────────────
 
-console.log('\n— Chart.VerticalBar — basic —\n')
+console.log('\nChart.VerticalBar basic -\n')
 new Chart.VerticalBar([
   { key: 'M', value: 10 },
   { key: 'T', value: 25 },
@@ -39,7 +39,7 @@ new Chart.VerticalBar([
   { key: 'S', value: 5 },
 ], { height: 8, colWidth: 3 }).print()
 
-console.log('\n— Chart.VerticalBar — styled + gaps —\n')
+console.log('\nChart.VerticalBar styled + gaps -\n')
 new Chart.VerticalBar([
   { key: 'Q1', value: 42, style: (s) => Color.blue(s) },
   { key: 'Q2', value: 67, style: (s) => Color.blue(s) },
@@ -50,7 +50,7 @@ new Chart.VerticalBar([
 
 // ─── Chart.Heatmap ────────────────────────────────────────────────────────────
 
-console.log('\n— Chart.Heatmap — basic —\n')
+console.log('\nChart.Heatmap basic -\n')
 new Chart.Heatmap(
   [
     [1, 5, 9, 3, 7],
@@ -65,7 +65,7 @@ new Chart.Heatmap(
   }
 ).print()
 
-console.log('\n— Chart.Heatmap — multi-stop scale —\n')
+console.log('\nChart.Heatmap multi-stop scale -\n')
 const data = Array.from({ length: 6 }, (_, r) =>
   Array.from({ length: 12 }, (_, c) => Math.round(Math.abs(Math.sin(r + c * 0.5) * 100)))
 )
@@ -76,18 +76,18 @@ new Chart.Heatmap(data, {
 
 // ─── Chart.Scatter ────────────────────────────────────────────────────────────
 
-console.log('\n— Chart.Scatter — basic —\n')
+console.log('\nChart.Scatter basic -\n')
 new Chart.Scatter([
   { x: 1, y: 2 }, { x: 2, y: 5 }, { x: 3, y: 1 }, { x: 4, y: 8 },
   { x: 5, y: 4 }, { x: 6, y: 9 }, { x: 7, y: 3 }, { x: 8, y: 6 },
 ], { height: 12 }).print()
 
-console.log('\n— Chart.Scatter — multi-series —\n')
+console.log('\nChart.Scatter multi-series -\n')
 const seriesA = Array.from({ length: 20 }, (_, i) => ({ x: i, y: Math.sin(i * 0.5) * 5 }))
 const seriesB = Array.from({ length: 20 }, (_, i) => ({ x: i, y: Math.cos(i * 0.5) * 5, character: '○', style: (s) => Color.cyan(s) }))
 new Chart.Scatter([...seriesA, ...seriesB], { height: 14, yMin: -6, yMax: 6 }).print()
 
-console.log('\n— Chart.Scatter — no axes —\n')
+console.log('\nChart.Scatter no axes -\n')
 new Chart.Scatter(
   Array.from({ length: 60 }, () => ({ x: Math.random() * 100, y: Math.random() * 100, style: (s) => Color.random(s) })),
   { height: 10, axes: false }
@@ -95,19 +95,19 @@ new Chart.Scatter(
 
 // ─── Chart.Line ───────────────────────────────────────────────────────────────
 
-console.log('\n— Chart.Line — sine wave —\n')
+console.log('\nChart.Line sine wave -\n')
 new Chart.Line(
   Array.from({ length: 40 }, (_, i) => ({ x: i, y: Math.sin(i * 0.3) * 4 })),
   { height: 12 }
 ).print()
 
-console.log('\n— Chart.Line — styled + fill —\n')
+console.log('\nChart.Line styled + fill -\n')
 new Chart.Line(
   Array.from({ length: 30 }, (_, i) => ({ x: i, y: Math.pow(i * 0.15, 2), style: (s) => Color.cyan(s) })),
   { height: 10, fill: true }
 ).print()
 
-console.log('\n— Chart.Line — multiple series —\n')
+console.log('\nChart.Line multiple series -\n')
 new Chart.Line([
   ...Array.from({ length: 40 }, (_, i) => ({ x: i, y: Math.sin(i * 0.3) * 4, style: (s) => Color.magenta(s) })),
   ...Array.from({ length: 40 }, (_, i) => ({ x: i, y: Math.cos(i * 0.3) * 4, style: (s) => Color.yellow(s) })),
@@ -115,7 +115,7 @@ new Chart.Line([
 
 // ─── Chart.Sparkline ─────────────────────────────────────────────────────────
 
-console.log('\n— Chart.Sparkline —\n')
+console.log('\nChart.Sparkline\n')
 
 const cpuSamples = [12, 45, 23, 67, 89, 55, 34, 78, 61, 42, 95, 30, 48, 73, 58]
 console.log('  CPU  ' + Chart.Sparkline(cpuSamples, { style: (s) => Color.green(s) }))

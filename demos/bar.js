@@ -15,40 +15,40 @@ function fill(start, duration, b) {
 
 const bar = new Bar({ interval: 35 })
 bar.start()
-bar.update('bounce — plain')
+bar.update('bounce: plain')
 
-at(3000, () => { bar.mode = 'loop';         bar.update('loop — plain') })
-at(6000, () => { bar.mode = 'loop-reverse'; bar.update('loop-reverse — plain') })
+at(3000, () => { bar.mode = 'loop';         bar.update('loop: plain') })
+at(6000, () => { bar.mode = 'loop-reverse'; bar.update('loop-reverse: plain') })
 at(9000, () => { bar.mode = 'bounce' })
 
 at(9000, () => {
   bar.prefix = '|'
   bar.suffix  = '|'
-  bar.update('bounce — pipe clamps')
+  bar.update('bounce: pipe clamps')
 })
 at(12000, () => {
   bar.prefix = '«'
   bar.suffix  = '»'
-  bar.update('bounce — guillemet clamps')
+  bar.update('bounce: guillemet clamps')
 })
 at(15000, () => {
   bar.prefix = '['
   bar.suffix  = ']'
 })
 
-at(15000, () => { bar.colors = C.blueRed;  bar.update('bounce — blue → red') })
-at(18000, () => { bar.colors = C.rainbow;  bar.update('bounce — rainbow') })
+at(15000, () => { bar.colors = C.blueRed;  bar.update('bounce: blue → red') })
+at(18000, () => { bar.colors = C.rainbow;  bar.update('bounce: rainbow') })
 
 at(21000, () => {
   bar.colorFill = true
   bar.shimmer   = 0.8
-  bar.update('bounce — rainbow + shimmer + dim fill')
+  bar.update('bounce: rainbow + shimmer + dim fill')
 })
 at(24000, () => {
   bar.shimmer   = 0
   bar.colorFill = false
   bar.bgColors  = ['#1a0000', '#00001a']
-  bar.update('bounce — rainbow + dark bg track')
+  bar.update('bounce: rainbow + dark bg track')
 })
 
 at(27000, () => {
@@ -57,7 +57,7 @@ at(27000, () => {
   bar.shimmer    = 0.6
   bar.colorFill  = true
   bar.mode       = 'loop'
-  bar.update('loop — rainbow cycling + shimmer + fill')
+  bar.update('loop: rainbow cycling + shimmer + fill')
 })
 
 let bounceCount = 0
@@ -70,7 +70,7 @@ at(30000, () => {
   bar.bgColors   = []
   bounceCount    = 0
   bar.onBounce   = () => { bounceCount++; bar.suffix = `] bounces: ${bounceCount}` }
-  bar.update('bounce — onBounce callback (updates back label)')
+  bar.update('bounce: onBounce callback (updates back label)')
 })
 at(33000, () => { bar.onBounce = undefined; bar.suffix = ']' })
 
@@ -81,7 +81,7 @@ at(33000, () => {
   bar.empty      = ' '
   bar.progress   = 0
   bar.onComplete = () => bar.update('complete!')
-  bar.update('determinate — rainbow + shimmer')
+  bar.update('determinate: rainbow + shimmer')
 })
 fill(33200, 4500, bar)
 
@@ -91,7 +91,7 @@ at(38500, () => {
   bar.bgColors  = ['#05000a', '#000a05']
   bar.colorFill = true
   bar.progress  = 0
-  bar.update('determinate — heat + fill + bg')
+  bar.update('determinate: heat + fill + bg')
 })
 fill(38700, 4500, bar)
 
@@ -114,7 +114,7 @@ setTimeout(() => {
     if (done >= total) {
       clearInterval(tick)
       eta.stop()
-      eta.succeed(`Done — ${total} files processed`)
+      eta.succeed(`Done: ${total} files processed`)
     }
   }, 80)
 }, 45000)

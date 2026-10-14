@@ -11,7 +11,7 @@ function fillBar(bar, durationMs) {
 
 ;(async () => {
   // ─── indeterminate + determinate mix ────────────────────────────────────────
-  console.log('— Mixed indeterminate / determinate bars —')
+  console.log('Mixed indeterminate / determinate bars')
   await delay(200)
 
   const multi1 = new MultiBar()
@@ -34,7 +34,7 @@ function fillBar(bar, durationMs) {
   console.log()
 
   // ─── parallel file processing with rate + ETA ────────────────────────────────
-  console.log('— Parallel tasks with rate / ETA tracking —')
+  console.log('Parallel tasks with rate / ETA tracking')
   await delay(200)
 
   const total = 120
@@ -74,7 +74,7 @@ function fillBar(bar, durationMs) {
   console.log()
 
   // ─── deploy pipeline ─────────────────────────────────────────────────────────
-  console.log('— Sequential pipeline (each step starts after previous completes) —')
+  console.log('Sequential pipeline (each step starts after previous completes)')
   await delay(200)
 
   const multi3 = new MultiBar()

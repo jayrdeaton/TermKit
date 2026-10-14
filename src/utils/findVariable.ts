@@ -8,20 +8,20 @@ import { resolveColor } from '@/utils/color'
 export function coerce(value: string, type: VariableType, enumValues: string[] | null, min: number | null = null, max: number | null = null): unknown {
   if (type === 'number' || type === 'integer') {
     const n = Number(value)
-    if (type === 'integer' && !Number.isInteger(n)) throw new Error(`Invalid value "${value}" — expected an integer`)
-    if (min !== null && n < min) throw new Error(`Invalid value "${value}" — must be >= ${min}`)
-    if (max !== null && n > max) throw new Error(`Invalid value "${value}" — must be <= ${max}`)
+    if (type === 'integer' && !Number.isInteger(n)) throw new Error(`Invalid value "${value}": expected an integer`)
+    if (min !== null && n < min) throw new Error(`Invalid value "${value}": must be >= ${min}`)
+    if (max !== null && n > max) throw new Error(`Invalid value "${value}": must be <= ${max}`)
     return n
   }
   if (type === 'string') {
-    if (min !== null && value.length < min) throw new Error(`Invalid value "${value}" — must be at least ${min} characters`)
-    if (max !== null && value.length > max) throw new Error(`Invalid value "${value}" — must be at most ${max} characters`)
+    if (min !== null && value.length < min) throw new Error(`Invalid value "${value}": must be at least ${min} characters`)
+    if (max !== null && value.length > max) throw new Error(`Invalid value "${value}": must be at most ${max} characters`)
     return value
   }
   if (type === 'boolean') return value === 'true'
   if (type === 'enum' && enumValues) {
     if (!enumValues.includes(value)) {
-      throw new Error(`Invalid value "${value}" — expected one of: ${enumValues.join(', ')}`)
+      throw new Error(`Invalid value "${value}": expected one of: ${enumValues.join(', ')}`)
     }
   }
   return value
@@ -67,7 +67,7 @@ export async function findVariable(array: string[], variable: Variable, commands
           const value = await promptForVariable(variable)
           if (value !== null) return [value]
         } catch {
-          throw new Error(`Missing required variable <${variable.name}> — stdin is not interactive`)
+          throw new Error(`Missing required variable <${variable.name}>: stdin is not interactive`)
         }
       }
       throw new Error(`Missing required variable <${variable.name}>`)
@@ -87,7 +87,7 @@ export async function findVariable(array: string[], variable: Variable, commands
         const value = await promptForVariable(variable)
         if (value !== null) return value
       } catch {
-        throw new Error(`Missing required variable <${variable.name}> — stdin is not interactive`)
+        throw new Error(`Missing required variable <${variable.name}>: stdin is not interactive`)
       }
     }
     throw new Error(`Missing required variable <${variable.name}>`)

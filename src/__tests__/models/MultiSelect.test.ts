@@ -133,7 +133,7 @@ describe('MultiSelect - absolute numbering with viewport', () => {
     press('\r')
     await p
     // The window is only a few rows tall, so a window-relative number could
-    // never reach "12." — seeing it proves the number is absolute.
+    // never reach "12." - seeing it proves the number is absolute.
     expect(output).toContain('12.')
     expect(output).toContain('Item 12')
   })

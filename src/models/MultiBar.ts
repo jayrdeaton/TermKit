@@ -20,7 +20,7 @@ export class MultiBar {
   }
 
   // Add a bar to the group. Must be called before start().
-  // Returns the Bar instance — use .update(), .progress, .tick(), .succeed(), etc.
+  // Returns the Bar instance - use .update(), .progress, .tick(), .succeed(), etc.
   add(options: BarOptions = {}): Bar {
     const bar = new Bar(options)
     bar._isManaged = true

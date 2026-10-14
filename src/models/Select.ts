@@ -141,7 +141,7 @@ export class Select {
 
       const pulse = this.pulseColor()
       // Item rows (label + description) come from caller data and can exceed
-      // terminal width — truncate the same way the hint line below does, so a
+      // terminal width - truncate the same way the hint line below does, so a
       // long row can't wrap and desync lastDrawnLines even if the terminal
       // doesn't fully honor DISABLE_WRAP.
       const maxRowCols = Math.max(10, (process.stdout.columns ?? 80) - stringLength(indent) - 1)
@@ -150,7 +150,7 @@ export class Select {
         const isSelected = i === selectedIndex
         const isSkip = i === filtered.length
         const numStr = isSkip ? '0.' : `${i + 1}.`
-        const desc = item.description ? ` ${colorText(this.descriptionColor, `— ${item.description}`)}` : ''
+        const desc = item.description ? ` ${colorText(this.descriptionColor, `- ${item.description}`)}` : ''
         let marker: string, tail: string
         if (isSelected && pulse) {
           marker = `${pulse}${this.selectedPrefix}${RESET}`

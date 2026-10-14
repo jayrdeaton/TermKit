@@ -67,9 +67,9 @@ describe('Variable hint getter', () => {
     expect(v.hint).toBe('(a|b|c)')
   })
 
-  it('includes min–max range when both are set', () => {
+  it('includes min-max range when both are set', () => {
     const v = new Variable({ min: 0, max: 100 })
-    expect(v.hint).toBe('(0–100)')
+    expect(v.hint).toBe('(0-100)')
   })
 
   it('includes >= constraint for min only', () => {
@@ -89,7 +89,7 @@ describe('Variable hint getter', () => {
 
   it('combines range and default', () => {
     const v = new Variable({ min: 1, max: 10, default: '5' })
-    expect(v.hint).toBe('(1–10, default: 5)')
+    expect(v.hint).toBe('(1-10, default: 5)')
   })
 
   it('combines enum and default', () => {

@@ -3,7 +3,7 @@ import * as Chart from '../../models/Chart'
 const strip = (s: string) => s.replace(/\x1b\[[^a-zA-Z]*[a-zA-Z]/g, '')
 
 // Fix a column width so bar widths are deterministic. writable:true so a later
-// test in the same jest worker can reassign process.stdout.columns — without it
+// test in the same jest worker can reassign process.stdout.columns - without it
 // the property is read-only and plain assignment elsewhere (e.g. Scrollbox) throws.
 beforeEach(() => {
   Object.defineProperty(process.stdout, 'columns', { value: 80, configurable: true, writable: true })
@@ -11,7 +11,7 @@ beforeEach(() => {
 
 // ── Chart.Bar ─────────────────────────────────────────────────────────────────
 
-describe('Chart.Bar — toString()', () => {
+describe('Chart.Bar - toString()', () => {
   it('returns a non-empty string', () => {
     const c = new Chart.Bar([{ value: 10 }, { value: 20 }])
     expect(c.toString().length).toBeGreaterThan(0)
@@ -54,7 +54,7 @@ describe('Chart.Bar — toString()', () => {
   })
 })
 
-describe('Chart.Bar — print()', () => {
+describe('Chart.Bar - print()', () => {
   it('writes to process.stdout', () => {
     const spy = jest.spyOn(process.stdout, 'write').mockImplementation(() => true)
     new Chart.Bar([{ value: 5 }]).print()
@@ -65,7 +65,7 @@ describe('Chart.Bar — print()', () => {
 
 // ── Chart.VerticalBar ──────────────────────────────────────────────────────────────
 
-describe('Chart.VerticalBar — toString()', () => {
+describe('Chart.VerticalBar - toString()', () => {
   it('returns a non-empty string', () => {
     const c = new Chart.VerticalBar([{ value: 5 }, { value: 10 }])
     expect(c.toString().length).toBeGreaterThan(0)
@@ -122,7 +122,7 @@ describe('Chart.VerticalBar — toString()', () => {
   })
 })
 
-describe('Chart.VerticalBar — print()', () => {
+describe('Chart.VerticalBar - print()', () => {
   it('writes to process.stdout', () => {
     const spy = jest.spyOn(process.stdout, 'write').mockImplementation(() => true)
     new Chart.VerticalBar([{ value: 5 }]).print()
@@ -133,7 +133,7 @@ describe('Chart.VerticalBar — print()', () => {
 
 // ── Chart.Heatmap ─────────────────────────────────────────────────────────────
 
-describe('Chart.Heatmap — toString()', () => {
+describe('Chart.Heatmap - toString()', () => {
   const data = [
     [0, 0.5, 1],
     [1, 0.5, 0]
@@ -173,7 +173,7 @@ describe('Chart.Heatmap — toString()', () => {
   })
 })
 
-describe('Chart.Heatmap — print()', () => {
+describe('Chart.Heatmap - print()', () => {
   it('writes to process.stdout', () => {
     const spy = jest.spyOn(process.stdout, 'write').mockImplementation(() => true)
     new Chart.Heatmap([[0, 1]]).print()
@@ -184,7 +184,7 @@ describe('Chart.Heatmap — print()', () => {
 
 // ── Chart.Scatter ─────────────────────────────────────────────────────────────
 
-describe('Chart.Scatter — toString()', () => {
+describe('Chart.Scatter - toString()', () => {
   const data = [
     { x: 1, y: 1 },
     { x: 2, y: 3 },
@@ -249,7 +249,7 @@ describe('Chart.Scatter — toString()', () => {
   })
 })
 
-describe('Chart.Scatter — print()', () => {
+describe('Chart.Scatter - print()', () => {
   it('writes to process.stdout', () => {
     const spy = jest.spyOn(process.stdout, 'write').mockImplementation(() => true)
     new Chart.Scatter([{ x: 1, y: 1 }], { width: 20, height: 8 }).print()
@@ -260,7 +260,7 @@ describe('Chart.Scatter — print()', () => {
 
 // ── Chart.Line ────────────────────────────────────────────────────────────────
 
-describe('Chart.Line — toString()', () => {
+describe('Chart.Line - toString()', () => {
   const data = [
     { x: 0, y: 0 },
     { x: 5, y: 5 },
@@ -328,7 +328,7 @@ describe('Chart.Line — toString()', () => {
   })
 })
 
-describe('Chart.Line — print()', () => {
+describe('Chart.Line - print()', () => {
   it('writes to process.stdout', () => {
     const spy = jest.spyOn(process.stdout, 'write').mockImplementation(() => true)
     new Chart.Line(

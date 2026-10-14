@@ -60,7 +60,7 @@ export class Bar {
   onLoop: (() => void) | undefined
   onComplete: (() => void) | undefined
 
-  // used by MultiBar — not intended for direct external use
+  // used by MultiBar - not intended for direct external use
   _isManaged = false
   _managedFinalLine: string | null = null
 

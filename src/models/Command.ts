@@ -202,7 +202,7 @@ export class Command {
       array.splice(ddIdx, 1)
     }
 
-    // whether the current command's positionals have been resolved — not yet if no tokens followed it
+    // whether the current command's positionals have been resolved - not yet if no tokens followed it
     let resolved = false
     while (array.length) {
       if (!array.includes('help') && !array.includes('version')) {

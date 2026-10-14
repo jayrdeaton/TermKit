@@ -1,7 +1,7 @@
 import { Variable } from '../../models/Variable'
 import { findVariables } from '../../utils/findVariables'
 
-describe('findVariables — no variable list', () => {
+describe('findVariables - no variable list', () => {
   it('returns { base: true } when base is provided and variables is null', async () => {
     expect(await findVariables('flag', [], null, [])).toEqual({ flag: true })
   })
@@ -11,7 +11,7 @@ describe('findVariables — no variable list', () => {
   })
 })
 
-describe('findVariables — single variable', () => {
+describe('findVariables - single variable', () => {
   it('assigns the consumed value to base', async () => {
     const arr = ['file.txt']
     const v = new Variable({ name: 'file', type: 'string' })
@@ -33,7 +33,7 @@ describe('findVariables — single variable', () => {
   })
 })
 
-describe('findVariables — multiple variables', () => {
+describe('findVariables - multiple variables', () => {
   it('nests values under base when there are multiple variables', async () => {
     const arr = ['a.txt', 'b.txt']
     const vars = [new Variable({ name: 'src', type: 'string' }), new Variable({ name: 'dest', type: 'string' })]
