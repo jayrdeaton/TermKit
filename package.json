@@ -91,9 +91,9 @@
     "cosmetic": "^1.5.3"
   },
   "devDependencies": {
-    "@infinitetoken/eslint-config": "^0.1.7",
-    "@infinitetoken/jest-config": "^0.1.5",
-    "@infinitetoken/tsconfig": "^0.3.0",
+    "@infinitetoken/eslint-config": "^0.2.1",
+    "@infinitetoken/jest-config": "^0.5.2",
+    "@infinitetoken/tsconfig": "^0.6.0",
     "@types/jest": "^30.0.0",
     "@types/node": "^26.1.1",
     "eslint": "^10.8.0",
